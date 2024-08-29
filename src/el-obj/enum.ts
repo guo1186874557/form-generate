@@ -3,6 +3,7 @@ export enum LabelPosition {
   LEFT = "left",
   RIGHT = "right",
   CENTER = "center",
+  AUTO = "",
 }
 
 export enum Size {
@@ -24,4 +25,5 @@ export enum ComponentType {
   SELECT = "select",
   RADIO = "radio",
   CHECKBOX = "checkbox",
+  FORM = "form",
 }

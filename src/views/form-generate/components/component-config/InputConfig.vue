@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputType } from "@/el-obj/enum";
+import { InputType, LabelPosition } from "@/el-obj/enum";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 const { selectedOption } = storeToRefs(useFormGenerate());
@@ -8,22 +8,33 @@ const { selectedOption } = storeToRefs(useFormGenerate());
 <template>
   <el-scrollbar>
     <el-form v-model="selectedOption" label-position="left" label-width="auto" size="small">
-      <el-form-item label="标签">
+      <el-form-item label="标签名称">
         <el-input v-model="selectedOption!.label"></el-input>
+      </el-form-item>
+      <el-form-item label="标签宽度">
+        <el-input-number v-model="selectedOption!.labelWidth"></el-input-number>
+      </el-form-item>
+      <el-form-item label="标签位置">
+        <el-radio-group v-model="selectedOption!.labelPosition">
+          <el-radio-button label="左侧" :value="LabelPosition.LEFT" />
+          <el-radio-button label="顶部" :value="LabelPosition.TOP" />
+          <el-radio-button label="右侧" :value="LabelPosition.RIGHT" />
+          <el-radio-button label="自动" :value="LabelPosition.AUTO" />
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="默认值">
         <el-input v-model="selectedOption!.defaultValue"></el-input>
       </el-form-item>
-      <el-form-item label="输入框类型">
+      <el-form-item label="输入类型">
         <el-select-v2
           v-model="selectedOption!.type"
           :options="[
-            { label: '文本框', value: InputType.TEXT },
-            { label: '密码框', value: InputType.PASSWORD },
-            { label: '多行文本框', value: InputType.TEXTAREA },
+            { label: InputType.TEXT, value: InputType.TEXT },
+            { label: InputType.PASSWORD, value: InputType.PASSWORD },
+            { label: InputType.TEXTAREA, value: InputType.TEXTAREA },
           ]"></el-select-v2>
       </el-form-item>
-      <el-form-item label="输入行数" v-if="selectedOption!.type === InputType.TEXTAREA">
+      <el-form-item label="行数" v-if="selectedOption!.type === InputType.TEXTAREA">
         <el-input-number v-model="selectedOption!.rows"></el-input-number>
       </el-form-item>
       <el-form-item label="占位符">

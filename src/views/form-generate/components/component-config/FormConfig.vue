@@ -24,7 +24,7 @@ const sizeOptions: { label: string; value: Size }[] = [
         </el-radio-group>
       </el-form-item>
       <el-form-item label="标签宽度">
-        <el-input v-model="formOption.labelWidth" placeholder="请输入标签宽度"></el-input>
+        <el-input-number v-model="formOption.labelWidth"></el-input-number>
       </el-form-item>
     </el-form>
   </el-scrollbar>

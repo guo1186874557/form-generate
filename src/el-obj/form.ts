@@ -1,14 +1,15 @@
 import { nanoid } from "nanoid";
 
-import { LabelPosition, Size } from "./enum";
+import { ComponentType, LabelPosition, Size } from "./enum";
 import type { ElInputObj } from "./input";
 
 export interface ElFormConfig {}
 
 export class ElFormOption {
   id: string = nanoid();
-  labelWidth: string | number = "auto";
+  labelWidth: number = 80;
   labelPosition: LabelPosition = LabelPosition.RIGHT;
+  componentType: ComponentType = ComponentType.FORM;
   size: Size = Size.DEFAULT;
   children: ElInputObj[] = [];
 }

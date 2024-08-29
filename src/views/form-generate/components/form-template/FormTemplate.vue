@@ -1,11 +1,35 @@
 <script setup lang="ts">
 import { VueDraggable } from "vue-draggable-plus";
 
+import { ElInputObj } from "@/el-obj/input";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 import FormTemplateItem from "./FormTemplateItem.vue";
 
-const { formOption } = storeToRefs(useFormGenerate());
+const { formOption, selectedOption } = storeToRefs(useFormGenerate());
+
+/** 选中item */
+function selectItem(componentObj: ElInputObj) {
+  formOption.value.children.forEach((v) => {
+    v.isSelect = false;
+    if (v.id === componentObj.id) {
+      v.isSelect = true;
+      selectedOption.value = v;
+    }
+  });
+}
+
+/** 根据id删除formOption的children */
+async function deleteFormOptionChildrenById(id: string) {
+  const index = formOption.value.children.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    // 选中上一个
+    if (index > 0) {
+      selectItem(formOption.value.children[index - 1]);
+    }
+    formOption.value.children.splice(index, 1);
+  }
+}
 </script>
 
 <template>
@@ -24,11 +48,14 @@ const { formOption } = storeToRefs(useFormGenerate());
           :label-width="formOption.labelWidth"
           :label-position="formOption.labelPosition as any"
           class="form-view bg-white rounded w-full min-h-full p-[10px]">
-          <FormTemplateItem v-for="item in formOption.children" :key="item.id" :option="item"></FormTemplateItem>
-          <pre>
-            {{ formOption }}
-           </pre
-          >
+          <FormTemplateItem
+            v-for="item in formOption.children"
+            :key="item.id"
+            :option="item"
+            @click="selectItem(item)"
+            @del="deleteFormOptionChildrenById(item.id)">
+          </FormTemplateItem>
+          <!--<pre> {{ formOption }}</pre>-->
         </el-form>
       </el-scrollbar>
     </VueDraggable>
