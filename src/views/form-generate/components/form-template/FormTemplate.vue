@@ -26,6 +26,9 @@ async function deleteFormOptionChildrenById(id: string) {
     // 选中上一个
     if (index > 0) {
       selectItem(formOption.value.children[index - 1]);
+    } else {
+      // 说明是最后一个 直接清空选中项
+      selectedOption.value = null;
     }
     formOption.value.children.splice(index, 1);
   }

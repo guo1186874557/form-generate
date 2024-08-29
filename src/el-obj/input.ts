@@ -15,13 +15,18 @@ export interface ElInputObjConfig {
   defaultValue?: string;
   placeholder?: string;
   bindKey?: string;
+  collapseValue?: string[];
 }
 
 export class ElInputObj {
+  /** 组件类型 */
+  componentType: ComponentType = ComponentType.INPUT;
+  /** 右侧配置中记录collapsed的值 */
+  collapseValue: string[] = [];
+
   icon: string;
   name: string;
   id: string = nanoid();
-  componentType: ComponentType = ComponentType.INPUT;
   bindKey: string;
   label: string;
   labelWidth: number;
@@ -31,7 +36,6 @@ export class ElInputObj {
   size: Size;
   defaultValue: string;
   placeholder: string;
-
   /** 多行输入框的输入行数 */
   rows: number;
 

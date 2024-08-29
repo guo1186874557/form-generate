@@ -13,6 +13,7 @@ defineOptions({ name: "ComponentConfig" });
     <el-tabs class="w-full h-full">
       <el-tab-pane class="w-full h-full" label="组件配置">
         <InputConfig v-if="selectedOption" :key="selectedOption.id"></InputConfig>
+        <el-empty v-else description="请先选择组件"></el-empty>
       </el-tab-pane>
       <el-tab-pane class="w-full h-full" label="表单配置">
         <FormConfig></FormConfig>
