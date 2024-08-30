@@ -3,9 +3,8 @@ import { Icon } from "@iconify/vue";
 import { ElMessage } from "element-plus";
 import { nanoid } from "nanoid";
 
-import { FieldType } from "@/el-obj/enum";
+import { ComponentAttrCategory, FieldType } from "@/el-obj/enum";
 import { fieldTypeOptions } from "@/el-obj/options";
-import { getInitValue } from "@/el-obj/utils";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 const { formFields, formOption } = storeToRefs(useFormGenerate());
@@ -30,7 +29,7 @@ watch(
   (v) => {
     formOption.value.formData = v.reduce(
       (pre, cur) => {
-        pre[cur.fieldName] = getInitValue(cur.type);
+        pre[cur.fieldName] = null;
         return pre;
       },
       {} as Record<string, any>,
@@ -51,27 +50,32 @@ function onDelField(index: number) {
 </script>
 
 <template>
-  <el-collapse-item name="field">
+  <el-collapse-item :name="ComponentAttrCategory.FIELD">
     <template #title><h3>设置字段</h3></template>
-    <ul class="flex flex-col gap-2 mb-[3px]">
-      <li class="flex" v-for="(field, index) in formFields" :key="field.id">
-        <div class="flex items-center gap-1">
+    <div class="flex flex-col gap-2 mb-[3px]">
+      <el-card v-for="(field, index) in formFields" :key="field.id" body-class="p-[5px]" shadow="never">
+        <div class="flex justify-end">
           <el-link type="danger" :underline="false" @click="onDelField(index)">
             <Icon style="font-size: 20px" icon="lets-icons:dell"></Icon>
           </el-link>
+        </div>
+        <div class="flex items-center my-[5px]">
+          <div class="whitespace-nowrap">字段名称：</div>
           <el-input
             :model-value="field.fieldName"
             @input="(val) => onInput(val, index)"
             placeholder="请填写字段名"></el-input>
         </div>
-        <span class="mx-[5px]">-</span>
-        <el-select-v2
-          v-model="field.type"
-          placeholder="请选择字段类型"
-          :options="fieldTypeOptions"
-          clearable></el-select-v2>
-      </li>
-    </ul>
+        <div class="flex items-center">
+          <span class="whitespace-nowrap">数据类型：</span>
+          <el-select-v2
+            v-model="field.type"
+            placeholder="请选择字段类型"
+            :options="fieldTypeOptions"
+            clearable></el-select-v2>
+        </div>
+      </el-card>
+    </div>
     <div class="text-center pb-[10px]">
       <el-button type="primary" circle class="text-[16px]" title="添加字段" @click="onAddField">
         <template #icon>

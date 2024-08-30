@@ -12,6 +12,11 @@ const router = createRouter({
       name: "form-generate",
       component: () => import("@/views/form-generate/index.vue"),
     },
+    {
+      path: "/code-preview",
+      name: "code-preview",
+      component: () => import("@/views/code-preview/index.vue"),
+    },
   ],
 });
 

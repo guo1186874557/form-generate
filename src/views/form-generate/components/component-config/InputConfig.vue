@@ -69,6 +69,7 @@ const onBindKeyUpdate = (val: string) => {
               placeholder="请选择对应的字段"
               :model-value="selectedOption!.bindKey"
               @update:model-value="onBindKeyUpdate"
+              clearable
               :options="selectFieldOptions">
             </el-select-v2>
           </el-form-item>
