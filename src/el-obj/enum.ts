@@ -40,6 +40,7 @@ export enum FieldType {
 /** 组件属性分类 */
 export enum ComponentAttrCategory {
   BASIC = "basic",
+  FIELD = "field",
 }
 
 /** 组件分类 */

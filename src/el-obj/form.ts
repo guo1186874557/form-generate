@@ -6,7 +6,7 @@ import type { ElInputObj } from "./input";
 export class ElFormOption {
   componentType: ComponentType = ComponentType.FORM;
   /** 右侧配置中记录collapsed的值 */
-  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC];
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.FIELD];
 
   id: string = nanoid();
   labelWidth: number = 80;
