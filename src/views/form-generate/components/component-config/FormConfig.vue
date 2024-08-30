@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { LabelPosition, Size } from "@/el-obj/enum";
+import { ComponentAttrCategory, LabelPosition } from "@/el-obj/enum";
+import { sizeOptions } from "@/el-obj/options";
 import useFormGenerate from "@/stores/useFormGenerate";
 
+import SetField from "./SetField.vue";
+
 const { formOption } = storeToRefs(useFormGenerate());
-const sizeOptions: { label: string; value: Size }[] = [
-  { label: Size.LARGE, value: Size.LARGE },
-  { label: Size.DEFAULT, value: Size.DEFAULT },
-  { label: Size.SMALL, value: Size.SMALL },
-];
 </script>
 
 <template>
   <el-scrollbar>
     <el-form :model="formOption" label-width="auto" label-position="left" size="small">
       <el-collapse v-model="formOption.collapseValue">
-        <el-collapse-item name="basic">
+        <el-collapse-item :name="ComponentAttrCategory.BASIC">
           <template #title><h3>基础配置</h3></template>
           <el-form-item label="全局组件大小">
             <el-select-v2 v-model="formOption.size" :options="sizeOptions"></el-select-v2>
@@ -30,6 +28,8 @@ const sizeOptions: { label: string; value: Size }[] = [
             <el-input-number v-model="formOption.labelWidth"></el-input-number>
           </el-form-item>
         </el-collapse-item>
+        <!-- 设置字段 -->
+        <SetField></SetField>
       </el-collapse>
     </el-form>
   </el-scrollbar>

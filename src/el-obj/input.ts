@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 
-import { ComponentType, InputType, LabelPosition, Size } from "./enum";
+import { ComponentAttrCategory, ComponentType, InputType, LabelPosition, Size } from "./enum";
 
 export interface ElInputObjConfig {
   type?: InputType;
@@ -22,7 +22,7 @@ export class ElInputObj {
   /** 组件类型 */
   componentType: ComponentType = ComponentType.INPUT;
   /** 右侧配置中记录collapsed的值 */
-  collapseValue: string[] = [];
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC];
 
   icon: string;
   name: string;
@@ -51,6 +51,6 @@ export class ElInputObj {
     this.rows = config.rows || 4;
     this.defaultValue = config.defaultValue || "";
     this.placeholder = config.placeholder || "请输入";
-    this.bindKey = config.bindKey || this.id;
+    this.bindKey = config.bindKey || "";
   }
 }

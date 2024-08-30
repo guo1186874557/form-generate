@@ -27,3 +27,22 @@ export enum ComponentType {
   CHECKBOX = "checkbox",
   FORM = "form",
 }
+
+/** 字段数据类型 */
+export enum FieldType {
+  STRING = "string",
+  NUMBER = "number",
+  BOOLEAN = "boolean",
+  ARRAY = "array",
+  OBJECT = "object",
+}
+
+/** 组件属性分类 */
+export enum ComponentAttrCategory {
+  BASIC = "basic",
+}
+
+/** 组件分类 */
+export enum ComponentCategory {
+  BASIC = "basic",
+}

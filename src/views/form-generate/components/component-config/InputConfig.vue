@@ -1,15 +1,36 @@
 <script setup lang="ts">
-import { InputType, LabelPosition } from "@/el-obj/enum";
+import { ComponentAttrCategory, InputType, LabelPosition } from "@/el-obj/enum";
 import useFormGenerate from "@/stores/useFormGenerate";
 
-const { selectedOption } = storeToRefs(useFormGenerate());
+const { selectedOption, formFields } = storeToRefs(useFormGenerate());
+
+const selectFieldOptions = computed(() => {
+  return formFields.value.filter((v) => !v.used).map((v) => ({ label: v.fieldName, value: v.fieldName }));
+});
+
+const onBindKeyUpdate = (val: string) => {
+  function updateUsed(fieldName: string, used: boolean) {
+    let findField = formFields.value.find((v) => v.fieldName === fieldName);
+    if (findField) {
+      findField.used = used;
+    }
+  }
+  if (selectedOption.value!.bindKey) {
+    // 找到之前的将其used设置为false
+    updateUsed(selectedOption.value!.bindKey, false);
+  }
+  // 更新当前的bindKey
+  selectedOption.value!.bindKey = val;
+  // 找到新的将其used设置为true
+  updateUsed(val, true);
+};
 </script>
 
 <template>
   <el-scrollbar>
     <el-form :model="selectedOption!" label-position="left" label-width="auto" size="small">
       <el-collapse v-model="selectedOption!.collapseValue">
-        <el-collapse-item name="basic">
+        <el-collapse-item :name="ComponentAttrCategory.BASIC">
           <template #title><h3>基础属性</h3></template>
           <el-form-item label="标签名称">
             <el-input v-model="selectedOption!.label"></el-input>
@@ -42,6 +63,14 @@ const { selectedOption } = storeToRefs(useFormGenerate());
           </el-form-item>
           <el-form-item label="占位符">
             <el-input v-model="selectedOption!.placeholder"></el-input>
+          </el-form-item>
+          <el-form-item label="字段">
+            <el-select-v2
+              placeholder="请选择对应的字段"
+              :model-value="selectedOption!.bindKey"
+              @update:model-value="onBindKeyUpdate"
+              :options="selectFieldOptions">
+            </el-select-v2>
           </el-form-item>
         </el-collapse-item>
       </el-collapse>

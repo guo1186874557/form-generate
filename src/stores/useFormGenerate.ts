@@ -1,24 +1,38 @@
+import { ComponentCategory, FieldType } from "@/el-obj/enum";
 import { ElFormOption } from "@/el-obj/form";
 import { ElInputObj } from "@/el-obj/input";
 
 const useFormGenerate = defineStore("formGenerate", () => {
-  const activeName = ref(["basic"]);
+  /* 左侧组件列表  */
+  const activeName = ref([ComponentCategory.BASIC]);
   const componentsList = ref([
     {
       title: "基础组件",
-      name: "basic",
+      name: ComponentCategory.BASIC,
       options: [new ElInputObj()],
     },
   ]);
 
-  const formOption = ref<ElFormOption>(new ElFormOption());
+  /** 当前选中的组件选项 */
   const selectedOption = ref<ElInputObj | null>(null);
+
+  /** 表单配置项 */
+  const formOption = ref<ElFormOption>(new ElFormOption());
+  // 表单字段配置项
+  type FormField = {
+    id: string;
+    fieldName: string;
+    type: FieldType;
+    used: boolean;
+  };
+  const formFields = ref<FormField[]>([]);
 
   return {
     activeName,
     componentsList,
     formOption,
     selectedOption,
+    formFields,
   };
 });
 
