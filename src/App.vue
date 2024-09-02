@@ -9,4 +9,13 @@ import zhCn from "element-plus/dist/locale/zh-cn.mjs";
   </el-config-provider>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+.preview-dialog {
+  display: flex;
+  flex-direction: column;
+  .el-dialog__body {
+    flex: 1;
+    min-height: 0;
+  }
+}
+</style>
