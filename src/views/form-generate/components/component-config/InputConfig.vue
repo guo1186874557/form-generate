@@ -47,7 +47,7 @@ const onBindKeyUpdate = (val: string) => {
             </el-radio-group>
           </el-form-item>
           <el-form-item label="默认值">
-            <el-input v-model="selectedOption!.defaultValue"></el-input>
+            <el-input type="textarea" :row="2" v-model="selectedOption!.defaultValue"></el-input>
           </el-form-item>
           <el-form-item label="输入类型">
             <el-select-v2

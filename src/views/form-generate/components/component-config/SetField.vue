@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { ElMessage } from "element-plus";
-import { nanoid } from "nanoid";
+import { customRandom, nanoid, random } from "nanoid";
 
 import { ComponentAttrCategory, FieldType } from "@/el-obj/enum";
 import { fieldTypeOptions } from "@/el-obj/options";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 const { formFields, formOption } = storeToRefs(useFormGenerate());
+const idGenerator = customRandom("1234567890abcdefghijklmnopqrstuvwxyz", 10, random);
 function onAddField() {
+  let id = idGenerator();
   formFields.value.push({
-    id: nanoid(),
+    id,
     type: FieldType.STRING,
-    fieldName: nanoid(5),
+    fieldName: "formData_" + id,
     used: false,
   });
 }
