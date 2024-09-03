@@ -1,20 +1,37 @@
 <script setup lang="ts">
-import { ComponentAttrCategory, InputType, LabelPosition } from "@/el-obj/enum";
+import { ComponentAttrCategory, FieldType, InputType, LabelPosition } from "@/el-obj/enum";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 const { selectedOption, formFields } = storeToRefs(useFormGenerate());
 
+// 当前组件可以选择的字段
 const selectFieldOptions = computed(() => {
   return formFields.value.filter((v) => !v.used).map((v) => ({ label: v.fieldName, value: v.fieldName }));
 });
 
-const onBindKeyUpdate = (val: string) => {
-  function updateUsed(fieldName: string, used: boolean) {
-    let findField = formFields.value.find((v) => v.fieldName === fieldName);
-    if (findField) {
-      findField.used = used;
-    }
+/**
+ * 根据字段名 获取当前字段的 信息对象
+ * @param fieldName 字段名
+ */
+function getFieldInfo(fieldName: string) {
+  return formFields.value.find((v) => v.fieldName === fieldName) ?? null;
+}
+// 当前已经选择的字段信息
+const selectedFieldInfo = computed(() => getFieldInfo(selectedOption.value!.bindKey));
+/**
+ * 更新字段的used状态
+ */
+function updateUsed(fieldName: string, used: boolean) {
+  let findField = getFieldInfo(fieldName);
+  if (findField) {
+    findField.used = used;
   }
+}
+
+/**
+ * 更新bindKey
+ */
+const onBindKeyUpdate = (val: string) => {
   if (selectedOption.value!.bindKey) {
     // 找到之前的将其used设置为false
     updateUsed(selectedOption.value!.bindKey, false);
@@ -46,9 +63,7 @@ const onBindKeyUpdate = (val: string) => {
               <el-radio-button label="自动" :value="LabelPosition.AUTO" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="默认值">
-            <el-input type="textarea" :row="2" v-model="selectedOption!.defaultValue"></el-input>
-          </el-form-item>
+
           <el-form-item label="输入类型">
             <el-select-v2
               v-model="selectedOption!.type"
@@ -70,8 +85,26 @@ const onBindKeyUpdate = (val: string) => {
               :model-value="selectedOption!.bindKey"
               @update:model-value="onBindKeyUpdate"
               clearable
+              @change="selectedOption!.defaultValue = null"
               :options="selectFieldOptions">
             </el-select-v2>
+          </el-form-item>
+          <el-form-item v-if="selectedOption!.bindKey" label="默认值">
+            <template v-if="selectedFieldInfo?.type === FieldType.BOOLEAN">
+              <el-radio-group v-model="selectedOption!.defaultValue">
+                <el-radio :value="true" label="是"></el-radio>
+                <el-radio :value="false" label="否"></el-radio>
+              </el-radio-group>
+            </template>
+            <template v-else-if="selectedFieldInfo?.type === FieldType.STRING">
+              <el-input v-model="selectedOption!.defaultValue"></el-input>
+            </template>
+            <template v-else-if="selectedFieldInfo?.type === FieldType.NUMBER">
+              <el-input v-model.number="selectedOption!.defaultValue"></el-input>
+            </template>
+            <template v-else>
+              <el-input disabled placeholder="暂不支持该类型"></el-input>
+            </template>
           </el-form-item>
         </el-collapse-item>
       </el-collapse>
