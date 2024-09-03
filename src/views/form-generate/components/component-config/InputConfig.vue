@@ -41,6 +41,26 @@ const onBindKeyUpdate = (val: string) => {
   // 找到新的将其used设置为true
   updateUsed(val, true);
 };
+
+// 校验正则
+const regsObj = ref([
+  {
+    label: "手机号",
+    value: "^1[3-9]\\d{9}$",
+  },
+  {
+    label: "邮箱",
+    value: "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",
+  },
+  {
+    label: "身份证号",
+    value: "^\\d{17}[\\d|xX|X]{1}$|^\\d{15}$",
+  },
+  {
+    label: "银行卡号",
+    value: "^\\d{16,19}$",
+  },
+]);
 </script>
 
 <template>
@@ -63,7 +83,6 @@ const onBindKeyUpdate = (val: string) => {
               <el-radio-button label="自动" :value="LabelPosition.AUTO" />
             </el-radio-group>
           </el-form-item>
-
           <el-form-item label="输入类型">
             <el-select-v2
               v-model="selectedOption!.type"
@@ -79,6 +98,10 @@ const onBindKeyUpdate = (val: string) => {
           <el-form-item label="占位符">
             <el-input v-model="selectedOption!.placeholder"></el-input>
           </el-form-item>
+        </el-collapse-item>
+
+        <el-collapse-item :name="ComponentAttrCategory.RULE">
+          <template #title><h3>配置规则</h3></template>
           <el-form-item label="字段">
             <el-select-v2
               placeholder="请选择对应的字段"
@@ -89,23 +112,45 @@ const onBindKeyUpdate = (val: string) => {
               :options="selectFieldOptions">
             </el-select-v2>
           </el-form-item>
-          <el-form-item v-if="selectedOption!.bindKey" label="默认值">
-            <template v-if="selectedFieldInfo?.type === FieldType.BOOLEAN">
-              <el-radio-group v-model="selectedOption!.defaultValue">
-                <el-radio :value="true" label="是"></el-radio>
-                <el-radio :value="false" label="否"></el-radio>
-              </el-radio-group>
-            </template>
-            <template v-else-if="selectedFieldInfo?.type === FieldType.STRING">
-              <el-input v-model="selectedOption!.defaultValue"></el-input>
-            </template>
-            <template v-else-if="selectedFieldInfo?.type === FieldType.NUMBER">
-              <el-input v-model.number="selectedOption!.defaultValue"></el-input>
-            </template>
-            <template v-else>
-              <el-input disabled placeholder="暂不支持该类型"></el-input>
-            </template>
-          </el-form-item>
+          <template v-if="selectedOption!.bindKey">
+            <el-form-item label="默认值">
+              <template v-if="selectedFieldInfo?.type === FieldType.BOOLEAN">
+                <el-radio-group v-model="selectedOption!.defaultValue as any">
+                  <el-radio :value="true" label="是"></el-radio>
+                  <el-radio :value="false" label="否"></el-radio>
+                </el-radio-group>
+              </template>
+              <template v-else-if="selectedFieldInfo?.type === FieldType.STRING">
+                <el-input v-model="selectedOption!.defaultValue as any"></el-input>
+              </template>
+              <template v-else-if="selectedFieldInfo?.type === FieldType.NUMBER">
+                <el-input v-model.number="selectedOption!.defaultValue as any"></el-input>
+              </template>
+              <template v-else>
+                <el-input disabled placeholder="暂不支持该类型"></el-input>
+              </template>
+            </el-form-item>
+            <el-form-item label="必填">
+              <el-switch v-model="selectedOption!.required"></el-switch>
+            </el-form-item>
+            <el-form-item label="必填校验信息">
+              <el-input v-model="selectedOption!.requiredMessage"></el-input>
+            </el-form-item>
+            <el-form-item label="字段校验">
+              <el-config-provider value-on-clear="">
+                <el-select-v2
+                  v-model="selectedOption!.validateRegStr"
+                  :options="regsObj"
+                  allow-create
+                  clearable
+                  filterable
+                  :reserve-keyword="false"></el-select-v2>
+              </el-config-provider>
+            </el-form-item>
+            <el-form-item label="校验失败信息">
+              <el-input v-model="selectedOption!.validateErrorMessage"></el-input>
+            </el-form-item>
+          </template>
         </el-collapse-item>
       </el-collapse>
     </el-form>

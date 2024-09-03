@@ -44,7 +44,7 @@ async function onPreview() {
     width="80%"
     destroy-on-close
     append-to-body>
-    <Repl theme="dark" :store="store" :editor="Monaco" :preview-options="previewOptions" />
+    <Repl theme="dark" :clear-console="false" :store="store" :editor="Monaco" :preview-options="previewOptions" />
   </el-dialog>
 </template>
 

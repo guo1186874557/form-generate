@@ -39,5 +39,6 @@ module.exports = {
       ["script-setup", "composition"], // "script-setup", "composition", "composition-vue2", or "options"
     ],
     "vue/multi-word-component-names": "off",
+    "no-useless-escape": "off",
   },
 };

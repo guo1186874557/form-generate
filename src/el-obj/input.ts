@@ -1,3 +1,4 @@
+import type { FormItemRule } from "element-plus";
 import { ElMessage } from "element-plus";
 import { nanoid } from "nanoid";
 
@@ -17,6 +18,10 @@ export interface ElInputObjConfig {
   placeholder?: string;
   bindKey?: string;
   collapseValue?: string[];
+  required?: boolean;
+  requiredMessage?: string;
+  validateRegStr?: string;
+  validateErrorMessage?: string;
 }
 
 export class ElInputObj {
@@ -25,7 +30,7 @@ export class ElInputObj {
   /** 组件类型 */
   componentType: ComponentType = ComponentType.INPUT;
   /** 右侧配置中记录collapsed的值 */
-  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC];
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.RULE];
 
   icon: string;
   name: string;
@@ -35,7 +40,11 @@ export class ElInputObj {
   labelWidth: number;
   labelPosition: LabelPosition;
   isSelect: boolean;
-
+  // 校验相关
+  required: boolean;
+  requiredMessage: string;
+  validateRegStr: string;
+  validateErrorMessage: string;
   type: InputType;
   size: Size;
   defaultValue: string | boolean | number | Record<string, any> | any[] | null;
@@ -56,6 +65,11 @@ export class ElInputObj {
     this.defaultValue = config.defaultValue || null;
     this.placeholder = config.placeholder || "请输入";
     this.bindKey = config.bindKey || "";
+
+    this.required = config.required || false;
+    this.requiredMessage = config.requiredMessage || `该字段为必填项`;
+    this.validateRegStr = config.validateRegStr || "";
+    this.validateErrorMessage = config.validateErrorMessage || "该字段格式不正确";
   }
 
   // 转化为code字符串
@@ -63,6 +77,7 @@ export class ElInputObj {
     return `
       <el-form-item 
         label="${this.label}" 
+        ${this.required ? "required" : ""}
         :label-width="${this.labelWidth}" 
         ${this.bindKey ? `prop="${this.bindKey}"` : ""} 
         ${this.labelPosition ? `label-position="${this.labelPosition}"` : ""}>
