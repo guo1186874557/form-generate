@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { ElMessage } from "element-plus";
-import { customRandom, nanoid, random } from "nanoid";
+import { customRandom, random } from "nanoid";
 
 import { ComponentAttrCategory, FieldType } from "@/el-obj/enum";
 import { fieldTypeOptions } from "@/el-obj/options";

@@ -22,7 +22,8 @@ export class ElFormOption {
    */
   async toCode(): Promise<string> {
     const subComponentNames = new Set(this.children.map((child) => child.componentName).filter((v) => v));
-    const importComponentCode = `import { ${subComponentNames.size > 0 ? Array.from(subComponentNames).join(", ") + ", " : ""}ElForm, ElFormItem, ElButton } from "element-plus";`;
+    const defaultImportComponents = ["ElForm", "ElFormItem", "ElButton"];
+    const importComponentCode = `import { ${subComponentNames.size > 0 ? Array.from(subComponentNames).join(", ") + ", " : ""}${defaultImportComponents.join(", ")} } from "element-plus";`;
     const importVueCode = `import { ref } from "vue";`;
 
     console.log(this.children.map((c) => c.toFormData()).filter((v) => v !== null));
