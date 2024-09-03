@@ -1,3 +1,4 @@
+import type { FormRules } from "element-plus";
 import { nanoid } from "nanoid";
 
 import { generateTemplate } from "@/el-obj/codeTemplate";
@@ -26,7 +27,6 @@ export class ElFormOption {
     const importComponentCode = `import { ${subComponentNames.size > 0 ? Array.from(subComponentNames).join(", ") + ", " : ""}${defaultImportComponents.join(", ")} } from "element-plus";`;
     const importVueCode = `import { ref } from "vue";`;
 
-    console.log(this.children.map((c) => c.toFormData()).filter((v) => v !== null));
     Object.assign(
       this.formData,
       this.children
@@ -34,10 +34,25 @@ export class ElFormOption {
         .filter((v) => v !== null)
         .reduce((pre, cur) => ({ ...pre, ...cur }), {}),
     );
+
+    const createRules = () => {
+      return this.children.map((child) => {
+        if (!child.bindKey) return "";
+        console.log(child.validateRegStr);
+        return `${child.bindKey}: [
+          ${child.required ? `{required: true, message: '${child.requiredMessage}'},` : ""}
+          {
+            validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}'),
+          }
+        ]
+        `;
+      });
+    };
+
     return generateTemplate({
       template: `
         <div class="p-[20px]">
-          <el-form ref="formRef" :model="formData" label-width="${this.labelWidth}px" label-position="${this.labelPosition}">
+          <el-form :rules="rules" ref="formRef" :model="formData" label-width="${this.labelWidth}px" label-position="${this.labelPosition}">
             ${this.children.map((child) => child.toCode()).join("\n\r")}
           </el-form>
           <div class="text-center">
@@ -47,12 +62,26 @@ export class ElFormOption {
       `,
       script: `
         ${importComponentCode}
-        
+        import type { FormItemRule } from "element-plus";
         ${importVueCode}
         
         const formData = ref(${JSON.stringify(this.formData, null, 2)});
         
         const formRef = ref<InstanceType<typeof ElForm>>(null);
+
+        const customRule = (reg: RegExp, errorMessage: string): FormItemRule["validator"] => {
+          return (rule, value, callback) => {
+            if(value === '' || value === undefined || value === null) return callback();
+            if (!reg.test(value)) {
+              return callback(new Error(errorMessage));
+            } 
+            callback();
+          };
+        };
+
+        const rules:FormItemRule[] = {
+          ${createRules()}
+        }
         
         function onSubmit() {
           formRef.value?.validate((valid) => {

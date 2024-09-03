@@ -5,9 +5,9 @@ export function getInitValue(type?: FieldType): any {
     case FieldType.ARRAY:
       return [];
     case FieldType.BOOLEAN:
-      return false;
+      return null;
     case FieldType.NUMBER:
-      return 0;
+      return null;
     case FieldType.OBJECT:
       return {};
     case FieldType.STRING:
