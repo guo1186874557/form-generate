@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Repl, useStore } from "@vue/repl";
-import Monaco from "@vue/repl/monaco-editor";
+import Codemirror from "@vue/repl/codemirror-editor";
 
 import useFormGenerate from "@/stores/useFormGenerate";
 
@@ -20,8 +20,8 @@ const store = useStore({
 
 const previewOptions = {
   headHTML: `
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"/>
-<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"><\/script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"><\/script>
   `,
 };
 
@@ -44,7 +44,14 @@ async function onPreview() {
     width="80%"
     destroy-on-close
     append-to-body>
-    <Repl theme="dark" :clear-console="false" :store="store" :editor="Monaco" :preview-options="previewOptions" />
+    <Repl
+      theme="dark"
+      :clear-console="false"
+      :show-compile-output="false"
+      :show-ts-config="false"
+      :store="store"
+      :editor="Codemirror"
+      :preview-options="previewOptions" />
   </el-dialog>
 </template>
 

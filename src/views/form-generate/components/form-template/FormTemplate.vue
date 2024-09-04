@@ -3,6 +3,7 @@ import { VueDraggable } from "vue-draggable-plus";
 
 import { ElInputObj } from "@/el-obj/input";
 import useFormGenerate from "@/stores/useFormGenerate";
+import { cloneFormItem } from "@/utils";
 
 import FormTemplateItem from "./FormTemplateItem.vue";
 import UtilsBar from "./UtilsBar.vue";
@@ -34,6 +35,18 @@ async function deleteFormOptionChildrenById(id: string) {
     formOption.value.children.splice(index, 1);
   }
 }
+
+/**
+ *  复制formItem数据
+ */
+function onCopy(formItemData: ElInputObj) {
+  const newItem = cloneFormItem(formItemData);
+
+  // 重置默认值
+  newItem.defaultValue = null;
+  // 将新的item添加到children
+  formOption.value.children.push(newItem);
+}
 </script>
 
 <template>
@@ -58,7 +71,8 @@ async function deleteFormOptionChildrenById(id: string) {
             :key="item.id"
             :option="item"
             @click="selectItem(item)"
-            @del="deleteFormOptionChildrenById(item.id)">
+            @del="deleteFormOptionChildrenById(item.id)"
+            @copy="onCopy(item)">
           </FormTemplateItem>
           <!--<pre> {{ formOption }}</pre>-->
         </el-form>

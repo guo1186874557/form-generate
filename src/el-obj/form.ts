@@ -1,4 +1,3 @@
-import type { FormRules } from "element-plus";
 import { nanoid } from "nanoid";
 
 import { generateTemplate } from "@/el-obj/codeTemplate";
@@ -36,24 +35,23 @@ export class ElFormOption {
     );
 
     const createRules = () => {
-      return this.children.map((child) => {
-        if (!child.bindKey) return "";
-        console.log(child.validateRegStr);
-        return `${child.bindKey}: [
+      return this.children
+        .map((child) => {
+          if (!child.bindKey) return "";
+          return `${child.bindKey}: [
           ${child.required ? `{required: true, message: '${child.requiredMessage}'},` : ""}
-          {
-            validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}'),
-          }
+          { validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}')}
         ]
         `;
-      });
+        })
+        .filter((v) => v !== "");
     };
 
     return generateTemplate({
       template: `
         <div class="p-[20px]">
           <el-form :rules="rules" ref="formRef" :model="formData" label-width="${this.labelWidth}px" label-position="${this.labelPosition}">
-            ${this.children.map((child) => child.toCode()).join("\n\r")}
+            ${this.children.map((child) => child.toCode()).join("\n")}
           </el-form>
           <div class="text-center">
             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -78,7 +76,6 @@ export class ElFormOption {
             callback();
           };
         };
-
         const rules:FormItemRule[] = {
           ${createRules()}
         }

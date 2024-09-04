@@ -3,18 +3,13 @@ import { Icon } from "@iconify/vue";
 import { VueDraggable } from "vue-draggable-plus";
 
 import { ElInputObj } from "@/el-obj/input";
+import { cloneFormItem } from "@/utils";
 
 defineProps<{
   title: string;
   options: { icon: string; name: string; id: string }[] | ElInputObj[];
   name?: string;
 }>();
-
-function clone(item: ElInputObj) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, bindKey, ...arg } = item;
-  return new ElInputObj(arg);
-}
 </script>
 
 <template>
@@ -23,7 +18,7 @@ function clone(item: ElInputObj) {
     <VueDraggable
       :group="{ name: 'component-drag', put: false, pull: 'clone' }"
       :model-value="options"
-      :clone="clone"
+      :clone="cloneFormItem"
       :sort="false"
       class="component-box">
       <div class="component-box_item" v-for="item in options" :key="item.id">

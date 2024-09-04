@@ -9,6 +9,7 @@ defineProps<{
 const emit = defineEmits<{
   click: [];
   del: [];
+  copy: [];
 }>();
 
 onMounted(() => {
@@ -30,6 +31,8 @@ onMounted(() => {
         width="20"
         icon="material-symbols-light:delete-outline"
         @click="$emit('del')"></Icon>
+
+      <Icon class="cursor-pointer hover:text-blue-300" width="20" icon="ph:copy" @click="$emit('copy')"></Icon>
     </div>
     <!-- 表单 -->
     <el-form-item
@@ -38,9 +41,10 @@ onMounted(() => {
       :label-position="option.labelPosition as any"
       class="m-0">
       <el-input
-        :model-value="option.defaultValue"
+        :model-value="option.defaultValue as any"
         :type="option.type"
         :placeholder="option.placeholder"
+        :disabled="option.disabled"
         :rows="option.rows" />
     </el-form-item>
   </div>
@@ -74,5 +78,6 @@ $borderWidth: 2px;
   right: -$borderWidth;
   gap: 3px;
   @include selectItem();
+  padding: 2px;
 }
 </style>

@@ -1,30 +1,40 @@
-import type { FormItemRule } from "element-plus";
 import { ElMessage } from "element-plus";
 import { nanoid } from "nanoid";
 
 import { ComponentAttrCategory, ComponentType, InputType, LabelPosition, Size } from "./enum";
 
 export interface ElInputObjConfig {
-  type?: InputType;
+  // formItem属性
   label?: string;
-  isSelect?: boolean;
-  name?: string;
-  icon?: string;
-  size?: Size;
-  rows?: number;
   labelWidth?: number;
   labelPosition?: LabelPosition;
-  defaultValue?: string;
+  // 左侧列表相关属性
+  name?: string;
+  icon?: string;
+
+
+  // 基本属性
+  size?: Size;
+  type?: InputType;
+  defaultValue?: string | boolean | number | Record<string, any> | any[] | null;
   placeholder?: string;
+  disabled?: boolean;
+  rows?: number; // 多行输入框独有
+
+  // 校验相关
   bindKey?: string;
-  collapseValue?: string[];
   required?: boolean;
   requiredMessage?: string;
   validateRegStr?: string;
   validateErrorMessage?: string;
 }
 
+type ExcludeKeys = "id" | "bindKey" | "componentName" | "componentType" | "collapseValue" | "toCode" | "toFormData" | "isSelect";
+export type GetElObjConfig<T> = T extends ElInputObj ? Omit<T, ExcludeKeys> : never;
+
 export class ElInputObj {
+  id: string = nanoid();
+
   /** 组件名称 */
   componentName: string = "ElInput";
   /** 组件类型 */
@@ -32,44 +42,51 @@ export class ElInputObj {
   /** 右侧配置中记录collapsed的值 */
   collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.RULE];
 
+  // 左侧列表相关属性
   icon: string;
   name: string;
-  id: string = nanoid();
-  bindKey: string;
+
+  // 基本属性
   label: string;
   labelWidth: number;
   labelPosition: LabelPosition;
-  isSelect: boolean;
-  // 校验相关
-  required: boolean;
-  requiredMessage: string;
-  validateRegStr: string;
-  validateErrorMessage: string;
   type: InputType;
   size: Size;
   defaultValue: string | boolean | number | Record<string, any> | any[] | null;
   placeholder: string;
-  /** 多行输入框的输入行数 */
+  disabled: boolean;
+  // 多行输入框独有
   rows: number;
+
+  // 校验相关
+  bindKey: string = "";
+  required: boolean;
+  requiredMessage: string;
+  validateRegStr: string;
+  validateErrorMessage: string;
+
+  // 自定义操作属性
+  isSelect: boolean = false; // 是否选中
+
+ 
+
 
   constructor(config: ElInputObjConfig = {}) {
     this.type = config.type || InputType.TEXT;
     this.label = config.label || "input";
     this.labelWidth = config.labelWidth || 0;
     this.labelPosition = config.labelPosition || LabelPosition.AUTO;
-    this.isSelect = config.isSelect || false;
     this.name = config.name || "输入框";
     this.icon = config.icon || "iconoir:input-field";
-    this.size = Size.DEFAULT;
+    this.size = config.size || Size.DEFAULT;
     this.rows = config.rows || 4;
     this.defaultValue = config.defaultValue || null;
     this.placeholder = config.placeholder || "请输入";
-    this.bindKey = config.bindKey || "";
-
     this.required = config.required || false;
     this.requiredMessage = config.requiredMessage || `该字段为必填项`;
     this.validateRegStr = config.validateRegStr || "";
     this.validateErrorMessage = config.validateErrorMessage || "该字段格式不正确";
+    this.disabled = config.disabled || false;
   }
 
   // 转化为code字符串
@@ -77,12 +94,12 @@ export class ElInputObj {
     return `
       <el-form-item 
         label="${this.label}" 
-        ${this.required ? "required" : ""}
         :label-width="${this.labelWidth}" 
         ${this.bindKey ? `prop="${this.bindKey}"` : ""} 
         ${this.labelPosition ? `label-position="${this.labelPosition}"` : ""}>
         <el-input
           ${this.bindKey ? `v-model="${formDataName}.${this.bindKey}"` : ""}
+          ${this.disabled ? "disabled" : ""}
           type="${this.type}"
           ${this.type === InputType.TEXTAREA ? `:rows="${this.rows}"` : ""}
           placeholder="${this.placeholder}"
