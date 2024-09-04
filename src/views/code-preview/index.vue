@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Repl, useStore } from "@vue/repl";
-import Monaco from "@vue/repl/monaco-editor";
+import Codemirror from "@vue/repl/codemirror-editor";
 
 import TextCode from "@/views/code-preview/components/TextCode.vue?raw";
 
@@ -26,34 +26,10 @@ const previewOptions = {
   />
   `.trim(),
 };
-
-function onPreview() {
-  store.setFiles({ "index.vue": TextCode }, "index.vue");
-  show.value = true;
-}
 </script>
 
 <template>
-  <el-button @click="onPreview"> 预览 </el-button>
-  <el-dialog
-    top="20px"
-    style="height: 90vh"
-    v-model="show"
-    title="代码预览"
-    width="80%"
-    destroy-on-close
-    append-to-body>
-    <Repl theme="dark" :store="store" :editor="Monaco" :preview-options="previewOptions" />
-  </el-dialog>
+  <Repl theme="dark" :editor="Codemirror" :clearConsole="false" />
 </template>
 
-<style lang="scss">
-.el-dialog {
-  display: flex;
-  flex-direction: column;
-  .el-dialog__body {
-    flex: 1;
-    min-height: 0;
-  }
-}
-</style>
+<style lang="scss"></style>

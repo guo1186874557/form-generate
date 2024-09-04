@@ -1,4 +1,3 @@
-import type { FormItemRule } from "element-plus";
 import { ElMessage } from "element-plus";
 import { nanoid } from "nanoid";
 
@@ -14,7 +13,7 @@ export interface ElInputObjConfig {
   rows?: number;
   labelWidth?: number;
   labelPosition?: LabelPosition;
-  defaultValue?: string;
+  defaultValue?: string | boolean | number | Record<string, any> | any[] | null;
   placeholder?: string;
   bindKey?: string;
   collapseValue?: string[];
@@ -22,6 +21,7 @@ export interface ElInputObjConfig {
   requiredMessage?: string;
   validateRegStr?: string;
   validateErrorMessage?: string;
+  disabled?: boolean;
 }
 
 export class ElInputObj {
@@ -40,6 +40,7 @@ export class ElInputObj {
   labelWidth: number;
   labelPosition: LabelPosition;
   isSelect: boolean;
+  disabled: boolean;
   // 校验相关
   required: boolean;
   requiredMessage: string;
@@ -65,11 +66,11 @@ export class ElInputObj {
     this.defaultValue = config.defaultValue || null;
     this.placeholder = config.placeholder || "请输入";
     this.bindKey = config.bindKey || "";
-
     this.required = config.required || false;
     this.requiredMessage = config.requiredMessage || `该字段为必填项`;
     this.validateRegStr = config.validateRegStr || "";
     this.validateErrorMessage = config.validateErrorMessage || "该字段格式不正确";
+    this.disabled = config.disabled || false;
   }
 
   // 转化为code字符串
@@ -77,12 +78,12 @@ export class ElInputObj {
     return `
       <el-form-item 
         label="${this.label}" 
-        ${this.required ? "required" : ""}
         :label-width="${this.labelWidth}" 
         ${this.bindKey ? `prop="${this.bindKey}"` : ""} 
         ${this.labelPosition ? `label-position="${this.labelPosition}"` : ""}>
         <el-input
           ${this.bindKey ? `v-model="${formDataName}.${this.bindKey}"` : ""}
+          ${this.disabled ? "disabled" : ""}
           type="${this.type}"
           ${this.type === InputType.TEXTAREA ? `:rows="${this.rows}"` : ""}
           placeholder="${this.placeholder}"

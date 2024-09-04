@@ -98,6 +98,9 @@ const regsObj = ref([
           <el-form-item label="占位符">
             <el-input v-model="selectedOption!.placeholder"></el-input>
           </el-form-item>
+          <el-form-item label="禁用">
+            <el-switch v-model="selectedOption!.disabled"></el-switch>
+          </el-form-item>
         </el-collapse-item>
 
         <el-collapse-item :name="ComponentAttrCategory.RULE">
