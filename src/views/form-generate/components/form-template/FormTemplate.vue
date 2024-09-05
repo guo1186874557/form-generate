@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { VueDraggable } from "vue-draggable-plus";
 
-import { ElInputObj } from "@/el-obj/input";
+import type { ComponentObj } from "@/el-obj/component";
 import useFormGenerate from "@/stores/useFormGenerate";
-import { cloneFormItem } from "@/utils";
 
 import FormTemplateItem from "./FormTemplateItem.vue";
 import UtilsBar from "./UtilsBar.vue";
@@ -11,7 +10,7 @@ import UtilsBar from "./UtilsBar.vue";
 const { formOption, selectedOption } = storeToRefs(useFormGenerate());
 
 /** 选中item */
-function selectItem(componentObj: ElInputObj) {
+function selectItem(componentObj: ComponentObj) {
   formOption.value.children.forEach((v) => {
     v.isSelect = false;
     if (v.id === componentObj.id) {
@@ -39,11 +38,8 @@ async function deleteFormOptionChildrenById(id: string) {
 /**
  *  复制formItem数据
  */
-function onCopy(formItemData: ElInputObj) {
-  const newItem = cloneFormItem(formItemData);
-
-  // 重置默认值
-  newItem.defaultValue = null;
+function onCopy(formItemData: ComponentObj) {
+  const newItem = formItemData.clone();
   // 将新的item添加到children
   formOption.value.children.push(newItem);
 }
@@ -63,7 +59,7 @@ function onCopy(formItemData: ElInputObj) {
       <el-scrollbar view-class="w-full h-full">
         <el-form
           :size="formOption.size as any"
-          :label-width="formOption.labelWidth"
+          :label-width="formOption.labelWidthAuto ? 'auto' : formOption.labelWidth + 'px'"
           :label-position="formOption.labelPosition as any"
           class="form-view bg-white rounded w-full min-h-full p-[10px]">
           <FormTemplateItem
@@ -74,7 +70,6 @@ function onCopy(formItemData: ElInputObj) {
             @del="deleteFormOptionChildrenById(item.id)"
             @copy="onCopy(item)">
           </FormTemplateItem>
-          <!--<pre> {{ formOption }}</pre>-->
         </el-form>
       </el-scrollbar>
     </VueDraggable>
