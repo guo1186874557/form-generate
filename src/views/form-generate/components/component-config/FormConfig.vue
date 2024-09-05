@@ -3,8 +3,6 @@ import { ComponentAttrCategory, LabelPosition } from "@/el-obj/enum";
 import { sizeOptions } from "@/el-obj/options";
 import useFormGenerate from "@/stores/useFormGenerate";
 
-import SetField from "./SetField.vue";
-
 const { formOption } = storeToRefs(useFormGenerate());
 </script>
 
@@ -25,11 +23,10 @@ const { formOption } = storeToRefs(useFormGenerate());
             </el-radio-group>
           </el-form-item>
           <el-form-item label="标签宽度">
-            <el-input-number v-model="formOption.labelWidth"></el-input-number>
+            <el-input-number :disabled="formOption.labelWidthAuto" v-model="formOption.labelWidth"></el-input-number>
+            <el-checkbox class="ml-2" v-model="formOption.labelWidthAuto">自动</el-checkbox>
           </el-form-item>
         </el-collapse-item>
-        <!-- 设置字段 -->
-        <SetField></SetField>
       </el-collapse>
     </el-form>
   </el-scrollbar>

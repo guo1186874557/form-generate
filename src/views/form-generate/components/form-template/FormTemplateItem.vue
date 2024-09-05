@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 
-import { ElInputObj } from "@/el-obj/input";
+import type { ComponentObj } from "@/el-obj/component";
+import type { InputObj } from "@/el-obj/input";
 
 defineProps<{
-  option: ElInputObj;
+  option: ComponentObj;
 }>();
 const emit = defineEmits<{
   click: [];
@@ -39,13 +40,14 @@ onMounted(() => {
       :label="option.label"
       :label-width="option.labelWidth"
       :label-position="option.labelPosition as any"
+      :required="option.required"
       class="m-0">
       <el-input
         :model-value="option.defaultValue as any"
-        :type="option.type"
+        :type="(option as InputObj).type"
         :placeholder="option.placeholder"
         :disabled="option.disabled"
-        :rows="option.rows" />
+        :rows="(option as InputObj).rows" />
     </el-form-item>
   </div>
 </template>
