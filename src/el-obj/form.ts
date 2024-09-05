@@ -1,9 +1,9 @@
 import { nanoid } from "nanoid";
 
 import { generateTemplate } from "@/el-obj/codeTemplate";
+import { ComponentObj } from "@/el-obj/component";
 
 import { ComponentAttrCategory, ComponentType, LabelPosition, Size } from "./enum";
-import type { ElInputObj } from "./input";
 
 export class ElFormOption {
   componentType: ComponentType = ComponentType.FORM;
@@ -12,9 +12,10 @@ export class ElFormOption {
 
   id: string = nanoid();
   labelWidth: number = 80;
+  labelWidthAuto: boolean = true; // 自动label宽度
   labelPosition: LabelPosition = LabelPosition.RIGHT;
   size: Size = Size.DEFAULT;
-  children: ElInputObj[] = [];
+  children: ComponentObj[] = [];
   formData: Record<string, any> = {};
 
   /**
@@ -40,7 +41,7 @@ export class ElFormOption {
           if (!child.bindKey) return "";
           return `${child.bindKey}: [
           ${child.required ? `{required: true, message: '${child.requiredMessage}'},` : ""}
-          { validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}')}
+          ${child.validateRegStr ? `{ validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}')}` : ""}
         ]
         `;
         })
@@ -50,11 +51,12 @@ export class ElFormOption {
     return generateTemplate({
       template: `
         <div class="p-[20px]">
-          <el-form :rules="rules" ref="formRef" :model="formData" label-width="${this.labelWidth}px" label-position="${this.labelPosition}">
-            ${this.children.map((child) => child.toCode()).join("\n")}
+          <el-form :rules="rules" ref="formRef" :model="formData" label-width="${this.labelWidthAuto ? "auto" : this.labelWidth + "px"}" label-position="${this.labelPosition}">
+            ${this.children.map((child) => child.toTemplate()).join("\n")}
           </el-form>
           <div class="text-center">
             <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button type="warning" @click="onReset">重置</el-button>
           </div>
         </div>
       `,
@@ -65,7 +67,7 @@ export class ElFormOption {
         
         const formData = ref(${JSON.stringify(this.formData, null, 2)});
         
-        const formRef = ref<InstanceType<typeof ElForm>>(null);
+        const formRef = ref<InstanceType<typeof ElForm> | null>(null);
 
         const customRule = (reg: RegExp, errorMessage: string): FormItemRule["validator"] => {
           return (rule, value, callback) => {
@@ -86,6 +88,10 @@ export class ElFormOption {
               // TODO: 提交表单数据
              }
           })
+        }
+        
+        function onReset() {
+          formRef.value?.resetFields();
         }
       `,
     });
