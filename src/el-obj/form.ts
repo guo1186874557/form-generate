@@ -35,23 +35,10 @@ export class ElFormOption {
         .reduce((pre, cur) => ({ ...pre, ...cur }), {}),
     );
 
-    const createRules = () => {
-      return this.children
-        .map((child) => {
-          if (!child.bindKey) return "";
-          return `${child.bindKey}: [
-          ${child.required ? `{required: true, message: '${child.requiredMessage}'},` : ""}
-          ${child.validateRegStr ? `{ validator: customRule(new RegExp(${JSON.stringify(child.validateRegStr)}),'${child.validateErrorMessage}')}` : ""}
-        ]
-        `;
-        })
-        .filter((v) => v !== "");
-    };
-
     return generateTemplate({
       template: `
         <div class="p-[20px]">
-          <el-form :rules="rules" ref="formRef" :model="formData" label-width="${this.labelWidthAuto ? "auto" : this.labelWidth + "px"}" label-position="${this.labelPosition}">
+          <el-form ref="formRef" :model="formData" label-width="${this.labelWidthAuto ? "auto" : this.labelWidth + "px"}" label-position="${this.labelPosition}">
             ${this.children.map((child) => child.toTemplate()).join("\n")}
           </el-form>
           <div class="text-center">
@@ -68,19 +55,6 @@ export class ElFormOption {
         const formData = ref(${JSON.stringify(this.formData, null, 2)});
         
         const formRef = ref<InstanceType<typeof ElForm> | null>(null);
-
-        const customRule = (reg: RegExp, errorMessage: string): FormItemRule["validator"] => {
-          return (rule, value, callback) => {
-            if(value === '' || value === undefined || value === null) return callback();
-            if (!reg.test(value)) {
-              return callback(new Error(errorMessage));
-            } 
-            callback();
-          };
-        };
-        const rules:FormItemRule[] = {
-          ${createRules()}
-        }
         
         function onSubmit() {
           formRef.value?.validate((valid) => {
