@@ -35,22 +35,18 @@ export class InputObj extends ComponentObj {
     this.rows = config.rows || 4;
     this.type = config.type || InputType.TEXT;
   }
-  toTemplate(formDataName: string = "formData"): string {
+  parserTemplateSelfAttr() {
+    return {
+      rows: this.type === InputType.TEXTAREA ? `rows="${this.rows}"` : "",
+      type: this.type !== InputType.TEXT ? `type="${this.type}"` : "",
+    };
+  }
+  toTemplate(): string {
+    const attrObj = this.parserTemplateAttr();
+    const selfAttrObj = this.parserTemplateSelfAttr();
     return `
-      <el-form-item 
-        label="${this.label}" 
-        :label-width="${this.labelWidth}" 
-        ${this.bindKey ? `prop="${this.bindKey}"` : ""} 
-        ${this.labelPosition ? `label-position="${this.labelPosition}"` : ""}>
-        <el-input
-          ${this.bindKey ? `v-model="${formDataName}.${this.bindKey}"` : ""}
-          ${this.disabled ? "disabled" : ""}
-          type="${this.type}"
-          ${this.type === InputType.TEXTAREA ? `:rows="${this.rows}"` : ""}
-          placeholder="${this.placeholder}"
-          ${this.size === Size.DEFAULT ? "" : `size="${this.size}"`}
-        >
-        </el-input>
+      <el-form-item ${attrObj.label} ${attrObj.labelPosition} ${attrObj.labelWidth} ${attrObj.prop} ${attrObj.rules()}>
+        <el-input ${attrObj.vModel} ${attrObj.disabled} ${attrObj.size} ${attrObj.placeholder} ${selfAttrObj.rows} ${selfAttrObj.type}></el-input>
       </el-form-item>
     `;
   }
@@ -60,6 +56,7 @@ export class InputObj extends ComponentObj {
       [this.bindKey]: this.defaultValue,
     };
   }
+
   clone(): InputObj {
     return new InputObj(this as InputObjConfig);
   }

@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative my-[5px]" :class="{ active: option.isSelect }" @click="$emit('click')">
+  <div class="relative my-[10px]" :class="{ active: option.isSelect }" @click="$emit('click')">
     <!-- 拖拽提示 -->
     <div v-if="option.isSelect" class="handle move-tooltip">
       <Icon width="14" icon="carbon:move"></Icon>
