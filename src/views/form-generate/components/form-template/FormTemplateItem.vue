@@ -41,13 +41,9 @@ onMounted(() => {
       :label-width="option.labelWidth"
       :label-position="option.labelPosition as any"
       :required="option.required"
+      :size="option.size"
       class="m-0">
-      <el-input
-        :model-value="option.defaultValue as any"
-        :type="(option as InputObj).type"
-        :placeholder="option.placeholder"
-        :disabled="option.disabled"
-        :rows="(option as InputObj).rows" />
+      <component :is="option.render()"></component>
     </el-form-item>
   </div>
 </template>
