@@ -1,8 +1,7 @@
-import type { FormItemRule, FormRules } from "element-plus";
 import { customRandom, nanoid, random } from "nanoid";
+import type { VNode } from "vue";
 
-import { ComponentAttrCategory, ComponentType, FieldType, LabelPosition, Size } from "@/el-obj/enum";
-import { ElFormOption } from "@/el-obj/form";
+import { ComponentAttrCategory, FieldType, LabelPosition, Size } from "@/el-obj/enum";
 
 const idGenerator = customRandom("1234567890abcdefghijklmnopqrstuvwxyz", 10, random);
 
@@ -11,7 +10,6 @@ export abstract class ComponentObj {
   bindKey: string = "formData_" + idGenerator();
   isSelect: boolean = false; // 是否选中
   abstract componentName: string;
-  abstract componentType: ComponentType;
   abstract collapseValue: ComponentAttrCategory[];
   abstract icon: string;
   abstract name: string;
@@ -31,9 +29,13 @@ export abstract class ComponentObj {
     public fieldType: FieldType,
   ) {}
   /** 转换代码 */
-  abstract toTemplate(formDataName?: string): string;
+  toTemplate(): string {
+    return "";
+  }
   /** 转换表单数据 */
-  abstract toFormData(): Record<string, any> | null;
+  toFormData(): Record<string, any> | null {
+    return null;
+  }
   /** 克隆 */
   abstract clone(): ComponentObj;
   /** 解析模板公共属性 */
@@ -43,7 +45,7 @@ export abstract class ComponentObj {
       label: `label="${this.label}"`,
       labelWidth: this.labelWidth !== 0 ? `labelWidth="${this.labelWidth}px"` : "",
       labelPosition: LabelPosition.AUTO === this.labelPosition ? "" : `labelPosition="${this.labelPosition}"`,
-      size: Size.DEFAULT === this.size ? "" : `size="${this.size}"`,
+      size: Size.AUTO === this.size ? "" : `size="${this.size}"`,
       disabled: this.disabled ? "disabled" : "",
       placeholder: this.placeholder ? `placeholder="${this.placeholder}"` : "",
       rules: () => {
@@ -61,6 +63,8 @@ export abstract class ComponentObj {
   }
   /** 解析模板自身属性 */
   abstract parserTemplateSelfAttr(): any;
+  /** 渲染函数 */
+  abstract render(): VNode;
 }
 
 export type ComponentObjConfig = Omit<

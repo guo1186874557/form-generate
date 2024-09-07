@@ -3,13 +3,14 @@ export enum LabelPosition {
   LEFT = "left",
   RIGHT = "right",
   CENTER = "center",
-  AUTO = "",
+  AUTO = "", // componentObj 使用 会根据全局组件位置自动调整位置
 }
 
 export enum Size {
   SMALL = "small",
   DEFAULT = "default",
   LARGE = "large",
+  AUTO = "", // componentObj 使用 会根据全局组件大小自动调整大小
 }
 
 /** 输入框类型 */
@@ -17,15 +18,6 @@ export enum InputType {
   TEXT = "text",
   PASSWORD = "password",
   TEXTAREA = "textarea",
-}
-
-/** 组件分类 */
-export enum ComponentType {
-  INPUT = "input",
-  SELECT = "select",
-  RADIO = "radio",
-  CHECKBOX = "checkbox",
-  FORM = "form",
 }
 
 /** 字段数据类型 */

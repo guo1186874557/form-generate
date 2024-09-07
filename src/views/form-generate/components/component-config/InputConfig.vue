@@ -3,7 +3,7 @@ import { ElMessage } from "element-plus";
 
 import { ComponentAttrCategory, FieldType, InputType, LabelPosition } from "@/el-obj/enum";
 import type { InputObj } from "@/el-obj/input";
-import { fieldTypeInputOptions } from "@/el-obj/options";
+import { fieldTypeInputOptions, sizeOptions } from "@/el-obj/options";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 const { selectedOption, formOption } = storeToRefs(useFormGenerate());
@@ -68,6 +68,15 @@ function onBindKeyChange(val: string) {
                 { label: InputType.TEXTAREA, value: InputType.TEXTAREA },
               ]"></el-select-v2>
           </el-form-item>
+          <el-form-item label="组件大小">
+            <el-config-provider value-on-clear="">
+              <el-select-v2
+                placeholder="默认跟随全局组件大小"
+                clearable
+                v-model="selectedOption!.size"
+                :options="sizeOptions"></el-select-v2>
+            </el-config-provider>
+          </el-form-item>
           <el-form-item label="行数" v-if="(selectedOption! as InputObj).type === InputType.TEXTAREA">
             <el-input-number v-model="(selectedOption! as InputObj).rows"></el-input-number>
           </el-form-item>
@@ -77,10 +86,7 @@ function onBindKeyChange(val: string) {
           <el-form-item label="禁用">
             <el-switch v-model="selectedOption!.disabled"></el-switch>
           </el-form-item>
-        </el-collapse-item>
 
-        <el-collapse-item :name="ComponentAttrCategory.RULE">
-          <template #title><h3>配置规则</h3></template>
           <el-form-item label="字段">
             <el-input :model-value="selectedOption!.bindKey" @input="onBindKeyChange" clearable></el-input>
           </el-form-item>
@@ -104,7 +110,10 @@ function onBindKeyChange(val: string) {
               v-model.number="selectedOption!.defaultValue"
               placeholder="请输入默认值"></el-input>
           </el-form-item>
+        </el-collapse-item>
 
+        <el-collapse-item :name="ComponentAttrCategory.RULE">
+          <template #title><h3>配置规则</h3></template>
           <el-form-item label="必填">
             <el-switch v-model="selectedOption!.required"></el-switch>
           </el-form-item>

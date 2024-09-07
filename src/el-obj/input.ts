@@ -1,6 +1,9 @@
+import { ElInput } from "element-plus";
+import type { VNode } from "vue";
+
 import { ComponentObj, type ComponentObjConfig } from "@/el-obj/component";
 
-import { ComponentAttrCategory, ComponentType, FieldType, InputType, LabelPosition, Size } from "./enum";
+import { ComponentAttrCategory, FieldType, InputType, LabelPosition, Size } from "./enum";
 
 export interface InputObjConfig extends Partial<ComponentObjConfig> {
   defaultValue?: string | number;
@@ -9,7 +12,6 @@ export interface InputObjConfig extends Partial<ComponentObjConfig> {
 }
 export class InputObj extends ComponentObj {
   componentName = "ElInput";
-  componentType = ComponentType.INPUT;
   collapseValue = [ComponentAttrCategory.BASIC, ComponentAttrCategory.RULE];
   icon = "iconoir:input-field";
   name = "输入框";
@@ -22,7 +24,7 @@ export class InputObj extends ComponentObj {
       config.label || "input",
       config.labelWidth || 0,
       config.labelPosition || LabelPosition.AUTO,
-      config.size || Size.DEFAULT,
+      config.size || Size.AUTO,
       config.disabled || false,
       config.placeholder || "请输入",
       config.required || false,
@@ -45,8 +47,8 @@ export class InputObj extends ComponentObj {
     const attrObj = this.parserTemplateAttr();
     const selfAttrObj = this.parserTemplateSelfAttr();
     return `
-      <el-form-item ${attrObj.label} ${attrObj.labelPosition} ${attrObj.labelWidth} ${attrObj.prop} ${attrObj.rules()}>
-        <el-input ${attrObj.vModel} ${attrObj.disabled} ${attrObj.size} ${attrObj.placeholder} ${selfAttrObj.rows} ${selfAttrObj.type}></el-input>
+      <el-form-item ${attrObj.size} ${attrObj.label} ${attrObj.labelPosition} ${attrObj.labelWidth} ${attrObj.prop} ${attrObj.rules()}>
+        <el-input ${attrObj.vModel} ${attrObj.disabled}  ${attrObj.placeholder} ${selfAttrObj.rows} ${selfAttrObj.type}></el-input>
       </el-form-item>
     `;
   }
@@ -56,8 +58,17 @@ export class InputObj extends ComponentObj {
       [this.bindKey]: this.defaultValue,
     };
   }
-
   clone(): InputObj {
     return new InputObj(this as InputObjConfig);
+  }
+  render(): VNode {
+    return h(ElInput, {
+      modelValue: this.defaultValue,
+      type: this.type,
+      disabled: this.disabled,
+      size: this.size,
+      placeholder: this.placeholder,
+      rows: this.type === InputType.TEXTAREA ? this.rows : undefined,
+    });
   }
 }

@@ -3,10 +3,9 @@ import { nanoid } from "nanoid";
 import { generateTemplate } from "@/el-obj/codeTemplate";
 import { ComponentObj } from "@/el-obj/component";
 
-import { ComponentAttrCategory, ComponentType, LabelPosition, Size } from "./enum";
+import { ComponentAttrCategory, LabelPosition, Size } from "./enum";
 
 export class ElFormOption {
-  componentType: ComponentType = ComponentType.FORM;
   /** 右侧配置中记录collapsed的值 */
   collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.FIELD];
 
@@ -38,7 +37,7 @@ export class ElFormOption {
     return generateTemplate({
       template: `
         <div class="p-[20px]">
-          <el-form ref="formRef" :model="formData" label-width="${this.labelWidthAuto ? "auto" : this.labelWidth + "px"}" label-position="${this.labelPosition}">
+          <el-form ref="formRef" ${this.size === Size.DEFAULT ? "" : `size=${this.size}`} :model="formData" label-width="${this.labelWidthAuto ? "auto" : this.labelWidth + "px"}" label-position="${this.labelPosition}">
             ${this.children.map((child) => child.toTemplate()).join("\n")}
           </el-form>
           <div class="text-center">
