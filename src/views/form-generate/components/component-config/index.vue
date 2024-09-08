@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import useFormGenerate from "@/stores/useFormGenerate";
 
+import InputConfig from "./components/input-config/InputConfig.vue";
 import FormConfig from "./FormConfig.vue";
-import InputConfig from "./InputConfig.vue";
 
 const { selectedOption } = storeToRefs(useFormGenerate());
 defineOptions({ name: "ComponentConfig" });

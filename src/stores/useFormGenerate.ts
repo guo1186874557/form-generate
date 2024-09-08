@@ -2,6 +2,7 @@ import { ComponentObj } from "@/el-obj/component";
 import { ComponentCategory } from "@/el-obj/enum";
 import { ElFormOption } from "@/el-obj/form";
 import { InputObj } from "@/el-obj/input";
+import { RadioObj } from "@/el-obj/radio";
 
 const useFormGenerate = defineStore("formGenerate", () => {
   /* 左侧组件列表  */
@@ -10,7 +11,7 @@ const useFormGenerate = defineStore("formGenerate", () => {
     {
       title: "基础组件",
       name: ComponentCategory.BASIC,
-      options: [new InputObj()],
+      options: [new InputObj(), new RadioObj()],
     },
   ]);
 
