@@ -9,6 +9,9 @@ export interface InputObjConfig extends Partial<ComponentObjConfig> {
   defaultValue?: string | number;
   rows?: number;
   type?: InputType;
+  placeholder?: string;
+  validateRegStr?: string;
+  validateErrorMessage?: string;
 }
 export class InputObj extends ComponentObj {
   componentName = "ElInput";
@@ -19,6 +22,9 @@ export class InputObj extends ComponentObj {
   defaultValue: string | number = "";
   rows?: number;
   type?: InputType;
+  placeholder: string;
+  validateRegStr: string;
+  validateErrorMessage: string;
   constructor(config: InputObjConfig = {}) {
     super(
       config.label || "input",
@@ -26,29 +32,40 @@ export class InputObj extends ComponentObj {
       config.labelPosition || LabelPosition.AUTO,
       config.size || Size.AUTO,
       config.disabled || false,
-      config.placeholder || "请输入",
       config.required || false,
       config.requiredMessage || "该字段为必填项",
-      config.validateRegStr || "",
-      config.validateErrorMessage || "输入格式不正确",
       config.fieldType || FieldType.STRING,
     );
     this.defaultValue = config.defaultValue || "";
     this.rows = config.rows || 4;
     this.type = config.type || InputType.TEXT;
+    this.placeholder = config.placeholder || "请输入";
+    this.validateRegStr = config.validateRegStr || "";
+    this.validateErrorMessage = config.validateErrorMessage || "输入格式不正确";
   }
   parserTemplateSelfAttr() {
     return {
+      placeholder: this.placeholder ? `placeholder="${this.placeholder}"` : "",
       rows: this.type === InputType.TEXTAREA ? `rows="${this.rows}"` : "",
       type: this.type !== InputType.TEXT ? `type="${this.type}"` : "",
+      rules: () => {
+        const rules: string[] = [];
+        if (this.required) {
+          rules.push(`{ required: true, message: '${this.requiredMessage}' }`);
+        }
+        if (this.validateRegStr) {
+          rules.push(`{ pattern: /${this.validateRegStr}/, message: '${this.validateErrorMessage}' }`);
+        }
+        return rules.length > 0 ? `:rules="[${rules}]"` : "";
+      },
     };
   }
   toTemplate(): string {
     const attrObj = this.parserTemplateAttr();
     const selfAttrObj = this.parserTemplateSelfAttr();
     return `
-      <el-form-item ${attrObj.size} ${attrObj.label} ${attrObj.labelPosition} ${attrObj.labelWidth} ${attrObj.prop} ${attrObj.rules()}>
-        <el-input ${attrObj.vModel} ${attrObj.disabled}  ${attrObj.placeholder} ${selfAttrObj.rows} ${selfAttrObj.type}></el-input>
+      <el-form-item ${attrObj.size} ${attrObj.label} ${attrObj.labelPosition} ${attrObj.labelWidth} ${attrObj.prop} ${selfAttrObj.rules()}>
+        <el-input ${attrObj.vModel} ${attrObj.disabled}  ${selfAttrObj.placeholder} ${selfAttrObj.rows} ${selfAttrObj.type}></el-input>
       </el-form-item>
     `;
   }
@@ -66,7 +83,6 @@ export class InputObj extends ComponentObj {
       modelValue: this.defaultValue,
       type: this.type,
       disabled: this.disabled,
-      size: this.size,
       placeholder: this.placeholder,
       rows: this.type === InputType.TEXTAREA ? this.rows : undefined,
     });

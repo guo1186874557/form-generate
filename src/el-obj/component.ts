@@ -21,11 +21,8 @@ export abstract class ComponentObj {
     public labelPosition: LabelPosition,
     public size: Size,
     public disabled: boolean,
-    public placeholder: string,
     public required: boolean,
     public requiredMessage: string,
-    public validateRegStr: string,
-    public validateErrorMessage: string,
     public fieldType: FieldType,
   ) {}
   /** 转换代码 */
@@ -47,14 +44,10 @@ export abstract class ComponentObj {
       labelPosition: LabelPosition.AUTO === this.labelPosition ? "" : `labelPosition="${this.labelPosition}"`,
       size: Size.AUTO === this.size ? "" : `size="${this.size}"`,
       disabled: this.disabled ? "disabled" : "",
-      placeholder: this.placeholder ? `placeholder="${this.placeholder}"` : "",
       rules: () => {
         const rules: string[] = [];
         if (this.required) {
           rules.push(`{ required: true, message: '${this.requiredMessage}' }`);
-        }
-        if (this.validateRegStr) {
-          rules.push(`{ pattern: /${this.validateRegStr}/, message: '${this.validateErrorMessage}' }`);
         }
         return rules.length > 0 ? `:rules="[${rules}]"` : "";
       },
@@ -66,8 +59,13 @@ export abstract class ComponentObj {
   /** 渲染函数 */
   abstract render(): VNode;
 }
+export type ExcludeFunctions<T> = Pick<
+  T,
+  {
+    [K in keyof T]: T[K] extends Function ? never : K;
+  }[keyof T]
+>;
 
-export type ComponentObjConfig = Omit<
-  ComponentObj,
-  "id" | "isSelect" | "bindKey" | "componentName" | "componentType" | "collapseValue" | "icon" | "name"
+export type ComponentObjConfig = ExcludeFunctions<
+  Omit<ComponentObj, "id" | "isSelect" | "bindKey" | "componentName" | "collapseValue" | "icon" | "name">
 >;

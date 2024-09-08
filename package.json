@@ -40,6 +40,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-vue": "^1.1.6",
     "sass": "^1.77.8",
+    "tsx": "^4.19.0",
     "typescript": "~5.4.0",
     "unocss": "^0.62.3",
     "unplugin-auto-import": "^0.18.2",
