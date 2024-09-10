@@ -9,7 +9,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "component-object/*": ["packages/component-object/*"],
     }
   }
 }

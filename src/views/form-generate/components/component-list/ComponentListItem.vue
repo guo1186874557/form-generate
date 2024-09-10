@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
+import { BasicComponentObject } from "component-object/src/obj/basic";
 import { VueDraggable } from "vue-draggable-plus";
-
-import type { ComponentObj } from "@/el-obj/component";
 
 defineProps<{
   title: string;
-  options: ComponentObj[];
+  options: BasicComponentObject[];
   name?: string;
 }>();
 </script>
@@ -17,7 +16,7 @@ defineProps<{
     <VueDraggable
       :group="{ name: 'component-drag', put: false, pull: 'clone' }"
       :model-value="options"
-      :clone="(item: ComponentObj) => item.clone()"
+      :clone="(item: BasicComponentObject) => item.clone()"
       :sort="false"
       class="component-box">
       <div class="component-box_item" v-for="item in options" :key="item.id">

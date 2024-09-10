@@ -1,14 +1,25 @@
 <script setup lang="ts">
-import useFormGenerate from "@/stores/useFormGenerate";
+import { InputComponentObject } from "component-object/src/obj/input";
+
+import { ComponentCategory } from "@/el-obj/enum";
+import useActiveVars from "@/stores/useActiveVars";
 
 import ComponentListItem from "./ComponentListItem.vue";
 
-const { activeName, componentsList } = storeToRefs(useFormGenerate());
+const { componentListActive } = storeToRefs(useActiveVars());
+
+const componentsList = ref([
+  {
+    title: "基础组件",
+    name: ComponentCategory.BASIC,
+    options: [new InputComponentObject()],
+  },
+]);
 </script>
 
 <template>
   <el-scrollbar class="component-list w-[250px]">
-    <el-collapse v-model="activeName">
+    <el-collapse v-model="componentListActive">
       <ComponentListItem
         v-for="(item, index) in componentsList"
         :name="item.name"

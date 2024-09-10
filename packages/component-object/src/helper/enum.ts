@@ -27,3 +27,12 @@ export enum FieldType {
   ARRAY = "array",
   OBJECT = "object",
 }
+
+/** 组件属性分类 */
+export enum ComponentAttrCategory {
+  BASIC = "basic",
+  /** 设置字段属性 */
+  FIELD = "field",
+  /** 校验规则相关属性 */
+  RULE = "rule",
+}

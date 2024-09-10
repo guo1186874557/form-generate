@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Repl, useStore } from "@vue/repl";
-import Codemirror from "@vue/repl/codemirror-editor";
+import CodeEditer from "@vue/repl/monaco-editor";
+import { prettierCode } from "component-object";
 
 import useFormGenerate from "@/stores/useFormGenerate";
 
-const { formOption } = storeToRefs(useFormGenerate());
+const { rootForm } = storeToRefs(useFormGenerate());
 
 const store = useStore({
   builtinImportMap: ref({
@@ -27,7 +28,7 @@ const previewOptions = {
 
 const show = ref(false);
 async function onPreview() {
-  let code = await formOption.value.toCode();
+  let code = await prettierCode(await rootForm.value.toSfc(), "html");
   await store.setFiles({ "Index.vue": code }, "Index.vue");
   show.value = true;
 }
@@ -50,7 +51,7 @@ async function onPreview() {
       :show-compile-output="false"
       :show-ts-config="false"
       :store="store"
-      :editor="Codemirror"
+      :editor="CodeEditer"
       :preview-options="previewOptions" />
   </el-dialog>
 </template>

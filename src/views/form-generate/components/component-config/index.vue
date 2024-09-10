@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import type { InputComponentObject } from "component-object/src/obj/input";
+
+import useActiveVars from "@/stores/useActiveVars";
 import useFormGenerate from "@/stores/useFormGenerate";
 
 import InputConfig from "./components/input-config/InputConfig.vue";
 import FormConfig from "./FormConfig.vue";
 
-const { selectedOption } = storeToRefs(useFormGenerate());
+const { selectComponentObj } = storeToRefs(useActiveVars());
+const { rootForm } = storeToRefs(useFormGenerate());
+
 defineOptions({ name: "ComponentConfig" });
 </script>
 
@@ -12,11 +17,13 @@ defineOptions({ name: "ComponentConfig" });
   <div class="attr-container w-[300px] px-2">
     <el-tabs class="w-full h-full">
       <el-tab-pane class="w-full h-full" label="组件配置">
-        <InputConfig v-if="selectedOption" :key="selectedOption.id"></InputConfig>
+        <template v-if="selectComponentObj">
+          <InputConfig :key="selectComponentObj.id" v-model="selectComponentObj"></InputConfig>
+        </template>
         <el-empty v-else description="请先选择组件"></el-empty>
       </el-tab-pane>
       <el-tab-pane class="w-full h-full" label="表单配置">
-        <FormConfig></FormConfig>
+        <FormConfig v-model="rootForm"></FormConfig>
       </el-tab-pane>
     </el-tabs>
   </div>

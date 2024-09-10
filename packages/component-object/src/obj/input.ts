@@ -1,21 +1,30 @@
-import { InputType } from "../helper/enum";
-import { type ComponentAttrInterface, ComponentObject, getComponentAttrDefault } from "./base";
+import { ElFormItem, ElInput } from "element-plus";
+import type { VNode } from "vue";
 
-export interface InputAttrInterface extends ComponentAttrInterface {
+import { ComponentAttrCategory, InputType } from "../helper/enum";
+import { createFieldName } from "../utils";
+import { type BasicComponentAttrInterface, BasicComponentObject, getComponentAttrDefault } from "./basic";
+import type { SfCConfigInterface } from "./ComponentObject";
+
+export interface InputAttrInterface extends BasicComponentAttrInterface {
   placeholder: string;
   clearable: boolean;
   readonly: boolean;
   type: InputType;
   validateRegStr: string;
   validateErrorMessage: string;
+  rows: number;
+  defaultValue: string;
 }
 
-export class InputComponentObject extends ComponentObject {
+export class InputComponentObject extends BasicComponentObject {
   attr: InputAttrInterface;
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.RULE];
+
   constructor(attr: Partial<InputAttrInterface> = {}) {
     super("el-input", "输入框", "iconoir:input-field");
     const defaultAttr: InputAttrInterface = {
-      ...getComponentAttrDefault(attr as ComponentAttrInterface),
+      ...getComponentAttrDefault(attr as BasicComponentAttrInterface),
       placeholder: "请输入内容",
       clearable: true,
       readonly: false,
@@ -23,6 +32,8 @@ export class InputComponentObject extends ComponentObject {
       required: false,
       validateRegStr: "",
       validateErrorMessage: "输入格式不正确",
+      rows: 4,
+      defaultValue: "",
     };
     this.attr = { ...defaultAttr, ...attr };
   }
@@ -34,6 +45,9 @@ export class InputComponentObject extends ComponentObject {
       clearable: attr.clearable ? "clearable" : "",
       readonly: attr.readonly ? "readonly" : "",
       type: attr.type !== InputType.TEXT ? `type="${attr.type}"` : "",
+      rows: attr.type === InputType.TEXTAREA ? `rows="${attr.rows}"` : "",
+      vModel: `v-model="formData.${attr.bindField}"`,
+      prop: `prop="${attr.bindField}"`,
       rules: () => {
         const rules: string[] = [];
         if (attr.required) {
@@ -46,7 +60,11 @@ export class InputComponentObject extends ComponentObject {
       },
     };
   }
-
+  sfc: SfCConfigInterface = {
+    import: {
+      "element-plus": ["ElInput"],
+    },
+  };
   toSfcTemplate(): string {
     const commonAttr = this.parseAttr();
     const attr = this.parseSelfAttr();
@@ -54,15 +72,39 @@ export class InputComponentObject extends ComponentObject {
       commonAttr.label,
       commonAttr.labelWidth,
       commonAttr.labelPosition,
-      commonAttr.prop,
       commonAttr.size,
+      attr.prop,
       attr.rules(),
     ];
-    const inputAttr = [commonAttr.vModel, attr.placeholder, attr.type, attr.clearable, attr.readonly];
-    return `
-      <el-form-item ${formItemAttr.filter(Boolean).join(" ")}>
-        <el-input ${inputAttr.filter(Boolean).join(" ")}></el-input>
-      </el-form-item>
-    `;
+    const inputAttr = [attr.vModel, attr.placeholder, attr.type, attr.clearable, attr.readonly, attr.rows];
+    return `<el-form-item ${formItemAttr.filter(Boolean).join(" ")}>
+              <el-input ${inputAttr.filter(Boolean).join(" ")}></el-input>
+            </el-form-item>`;
+  }
+  clone(): InputComponentObject {
+    const newInput = new InputComponentObject(this.attr);
+    newInput.attr.bindField = createFieldName();
+    return newInput;
+  }
+  render(): VNode {
+    const inputVNode = h(ElInput, {
+      modelValue: this.attr.defaultValue,
+      type: this.attr.type,
+      disabled: this.attr.disabled,
+      placeholder: this.attr.placeholder,
+      rows: this.attr.type === InputType.TEXTAREA ? this.attr.rows : undefined,
+    });
+    return h(
+      ElFormItem,
+      {
+        label: this.attr.label,
+        labelPosition: this.attr.labelPosition as any,
+        labelWidth: this.attr.labelWidthAuto ? undefined : this.attr.labelWidth,
+        size: this.attr.size,
+        required: this.attr.required,
+        class: "m-0",
+      },
+      { default: () => inputVNode },
+    );
   }
 }

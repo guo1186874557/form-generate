@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ComponentAttrCategory, FieldType, InputType } from "@/el-obj/enum";
-import type { InputObj } from "@/el-obj/input";
-import useFormGenerate from "@/stores/useFormGenerate";
+import { ComponentAttrCategory, FieldType, InputComponentObject, InputType } from "component-object";
+
 import BindFieldConfig from "@/views/form-generate/components/component-config/components/BindFieldConfig.vue";
 import ComponentSizeConfig from "@/views/form-generate/components/component-config/components/ComponentSizeConfig.vue";
 import DisabledConfig from "@/views/form-generate/components/component-config/components/DisabledConfig.vue";
@@ -15,7 +14,7 @@ import PlaceholderConfig from "@/views/form-generate/components/component-config
 import RequiredConfig from "@/views/form-generate/components/component-config/components/RequiredConfig.vue";
 import RequiredMessageConfig from "@/views/form-generate/components/component-config/components/RequiredMessageConfig.vue";
 
-const { selectedOption } = storeToRefs(useFormGenerate());
+const inputObject = defineModel<any>({ required: true });
 
 // 校验正则
 const regsObj = [
@@ -36,49 +35,49 @@ const regsObj = [
 
 <template>
   <el-scrollbar>
-    <el-form :model="selectedOption!" label-position="left" label-width="auto" size="small">
-      <el-collapse v-model="selectedOption!.collapseValue">
+    <el-form :model="inputObject" label-position="left" label-width="auto" size="small">
+      <el-collapse v-model="inputObject.collapseValue">
         <el-collapse-item :name="ComponentAttrCategory.BASIC">
           <template #title><h3>基础属性</h3></template>
-          <LabelNameConfig v-model="selectedOption!.label"></LabelNameConfig>
-          <LabelWidthConfig v-model="selectedOption!.labelWidth"></LabelWidthConfig>
-          <LabelPositionConfig v-model="selectedOption!.labelPosition"></LabelPositionConfig>
-          <ComponentSizeConfig v-model="selectedOption!.size"></ComponentSizeConfig>
-          <DisabledConfig v-model="selectedOption!.disabled"></DisabledConfig>
-          <BindFieldConfig v-model="selectedOption!.bindKey"></BindFieldConfig>
+          <LabelNameConfig v-model="inputObject.attr.label"></LabelNameConfig>
+          <LabelWidthConfig
+            v-model:label-width="inputObject.attr.labelWidth"
+            v-model:label-width-auto="inputObject.attr.labelWidthAuto"></LabelWidthConfig>
+          <LabelPositionConfig v-model="inputObject.attr.labelPosition"></LabelPositionConfig>
+          <ComponentSizeConfig v-model="inputObject.attr.size"></ComponentSizeConfig>
+          <DisabledConfig v-model="inputObject.attr.disabled"></DisabledConfig>
+          <BindFieldConfig v-model="inputObject.attr.bindField"></BindFieldConfig>
 
           <!--以下输入框独有的属性配置-->
-          <PlaceholderConfig v-model="(selectedOption! as InputObj).placeholder"></PlaceholderConfig>
-          <InputTypeConfig v-model="(selectedOption! as InputObj).type"></InputTypeConfig>
-          <RowsConfig
-            v-if="(selectedOption! as InputObj).type === InputType.TEXTAREA"
-            v-model="(selectedOption! as InputObj).rows"></RowsConfig>
+          <PlaceholderConfig v-model="inputObject.attr.placeholder"></PlaceholderConfig>
+          <InputTypeConfig v-model="inputObject.attr.type"></InputTypeConfig>
+          <RowsConfig v-if="inputObject.attr.type === InputType.TEXTAREA" v-model="inputObject.attr.rows"></RowsConfig>
           <FieldTypeConfig
-            v-model="selectedOption!.fieldType"
-            @change="selectedOption!.defaultValue = ''"></FieldTypeConfig>
+            v-model="inputObject.attr.fieldType"
+            @change="inputObject.attr.defaultValue = ''"></FieldTypeConfig>
           <el-form-item label="默认值">
             <el-input
               clearable
-              v-if="selectedOption!.fieldType === FieldType.STRING"
-              v-model="selectedOption!.defaultValue"
+              v-if="inputObject.attr.fieldType === FieldType.STRING"
+              v-model="inputObject.attr.defaultValue"
               placeholder="请输入默认值"></el-input>
             <el-input
               v-else
               clearable
-              v-model.number="selectedOption!.defaultValue"
+              v-model.number="inputObject.attr.defaultValue"
               placeholder="请输入默认值"></el-input>
           </el-form-item>
         </el-collapse-item>
 
         <el-collapse-item :name="ComponentAttrCategory.RULE">
           <template #title><h3>配置规则</h3></template>
-          <RequiredConfig v-model="selectedOption!.required"></RequiredConfig>
-          <required-message-config v-model="selectedOption!.requiredMessage"></required-message-config>
+          <RequiredConfig v-model="inputObject.attr.required"></RequiredConfig>
+          <required-message-config v-model="inputObject.attr.requiredMessage"></required-message-config>
           <!--以下是输入框独有的配置规则-->
           <el-form-item label="字段校验">
             <el-config-provider value-on-clear="">
               <el-select-v2
-                v-model="(selectedOption! as InputObj).validateRegStr"
+                v-model="inputObject.attr.validateRegStr"
                 :options="regsObj"
                 allow-create
                 clearable
@@ -88,7 +87,7 @@ const regsObj = [
             </el-config-provider>
           </el-form-item>
           <el-form-item label="校验失败信息">
-            <el-input v-model="(selectedOption! as InputObj).validateErrorMessage"></el-input>
+            <el-input v-model="inputObject.attr.validateErrorMessage"></el-input>
           </el-form-item>
         </el-collapse-item>
       </el-collapse>
