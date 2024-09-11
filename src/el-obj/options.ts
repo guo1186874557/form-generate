@@ -3,7 +3,6 @@ import { FieldType, Size } from "./enum";
 /** size属性的选项 */
 export const sizeOptions: { label: Size; value: Size }[] = [
   { label: Size.LARGE, value: Size.LARGE },
-  { label: Size.DEFAULT, value: Size.DEFAULT },
   { label: Size.SMALL, value: Size.SMALL },
 ];
 

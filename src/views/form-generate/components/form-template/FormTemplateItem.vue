@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-
-import type { ComponentObj } from "@/el-obj/component";
-import type { InputObj } from "@/el-obj/input";
+import { ComponentObject } from "component-object";
 
 defineProps<{
-  option: ComponentObj;
+  option: ComponentObject;
 }>();
+
 const emit = defineEmits<{
   click: [];
   del: [];
@@ -19,14 +18,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative my-[10px]" :class="{ active: option.isSelect }" @click="$emit('click')">
+  <div class="relative my-[10px]" :class="{ active: option.selected }" @click="$emit('click')">
     <!-- 拖拽提示 -->
-    <div v-if="option.isSelect" class="handle move-tooltip">
+    <div v-if="option.selected" class="handle move-tooltip">
       <Icon width="14" icon="carbon:move"></Icon>
       <span class="text-[12px]">{{ option.name }}</span>
     </div>
     <!-- 操作栏 -->
-    <div v-if="option.isSelect" class="operation-bar">
+    <div v-if="option.selected" class="operation-bar">
       <Icon
         class="cursor-pointer hover:text-blue-300"
         width="20"
@@ -36,15 +35,7 @@ onMounted(() => {
       <Icon class="cursor-pointer hover:text-blue-300" width="20" icon="ph:copy" @click="$emit('copy')"></Icon>
     </div>
     <!-- 表单 -->
-    <el-form-item
-      :label="option.label"
-      :label-width="option.labelWidth"
-      :label-position="option.labelPosition as any"
-      :required="option.required"
-      :size="option.size"
-      class="m-0">
-      <component :is="option.render()"></component>
-    </el-form-item>
+    <component :is="option.render()"></component>
   </div>
 </template>
 
