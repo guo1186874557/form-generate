@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { InputComponentObject } from "component-object/src/obj/input";
+import { nanoid } from "nanoid";
 
-import { ComponentCategory } from "@/el-obj/enum";
 import useActiveVars from "@/stores/useActiveVars";
+import { ComponentType } from "@/types/enum";
+import type { ComponentListType } from "@/views/form-generate/components/component-list/interface";
 
 import ComponentListItem from "./ComponentListItem.vue";
 
 const { componentListActive } = storeToRefs(useActiveVars());
 
-const componentsList = ref([
+const componentsList = ref<ComponentListType[]>([
   {
     title: "基础组件",
-    name: ComponentCategory.BASIC,
-    options: [new InputComponentObject()],
+    name: "basic",
+    options: [
+      {
+        id: nanoid(),
+        name: "输入框",
+        icon: "iconoir:input-field",
+        type: ComponentType.INPUT,
+      },
+    ],
   },
 ]);
 </script>

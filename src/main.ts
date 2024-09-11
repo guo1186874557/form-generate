@@ -1,6 +1,7 @@
 import "virtual:uno.css";
 import "@/assets/css/base.scss";
 import "element-plus/es/components/message/style/css";
+import "./model";
 
 import { createPinia } from "pinia";
 import { createApp } from "vue";

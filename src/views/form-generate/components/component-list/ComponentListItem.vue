@@ -3,20 +3,28 @@ import { Icon } from "@iconify/vue";
 import { BasicComponentObject } from "component-object/src/obj/basic";
 import { VueDraggable } from "vue-draggable-plus";
 
+import type { ComponentListItemType } from "@/views/form-generate/components/component-list/interface";
+
 defineProps<{
   title: string;
-  options: BasicComponentObject[];
-  name?: string;
+  options: ComponentListItemType[];
+  name: string;
 }>();
+
+function onClone(item: ComponentListItemType) {
+  // 创建一个输入框
+}
 </script>
 
 <template>
   <el-collapse-item :name="name">
-    <template #title> <h3 class="px-2">基础组件</h3> </template>
+    <template #title>
+      <h3 class="px-2">{{ title }}</h3>
+    </template>
     <VueDraggable
       :group="{ name: 'component-drag', put: false, pull: 'clone' }"
       :model-value="options"
-      :clone="(item: BasicComponentObject) => item.clone()"
+      :clone="onClone"
       :sort="false"
       class="component-box">
       <div class="component-box_item" v-for="item in options" :key="item.id">
