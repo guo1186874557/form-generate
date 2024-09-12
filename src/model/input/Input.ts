@@ -1,4 +1,5 @@
-import { nanoid } from "nanoid";
+import { Component } from "@/model/common/Component";
+import { createFieldName } from "@/utils";
 
 export enum InputType {
   TEXT = "",
@@ -16,10 +17,7 @@ export interface InputAttrInterface {
   bindField: string;
 }
 
-export class Input {
-  id: string = nanoid();
-  selected: boolean = false;
-  attr: InputAttrInterface;
+export class Input extends Component<InputAttrInterface> {
   constructor(attr: Partial<InputAttrInterface> = {}) {
     const defaultAttr: InputAttrInterface = {
       placeholder: "请输入",
@@ -28,8 +26,13 @@ export class Input {
       type: InputType.TEXT,
       rows: 4,
       defaultValue: "",
-      bindField: "",
+      bindField: createFieldName(),
     };
-    this.attr = { ...defaultAttr, ...attr };
+    super({ ...defaultAttr, ...attr });
+  }
+  override clone(): Input {
+    const newInput = new Input(this.attr);
+    newInput.attr.bindField = createFieldName();
+    return newInput;
   }
 }

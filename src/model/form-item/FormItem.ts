@@ -1,10 +1,9 @@
-import { nanoid } from "nanoid";
-
-import { Size } from "@/types/enum";
+import { Component } from "@/model/common/Component";
+import { LabelPosition, Size } from "@/types/enum";
 
 export interface FormItemAttrInterface {
   label: string;
-  labelPosition: string;
+  labelPosition: LabelPosition;
   labelWidth: number;
   size: Size;
   required: boolean;
@@ -13,15 +12,12 @@ export interface FormItemAttrInterface {
   patternMsg: string;
   prop: string;
 }
-export class FormItem {
-  id: string = nanoid();
-  selected: boolean = false;
-  attr: FormItemAttrInterface;
-  children: any[] = [];
-  constructor(attr: Partial<FormItemAttrInterface> = {}, child: any | any[]) {
+export class FormItem extends Component<FormItemAttrInterface> {
+  children: Component[] = [];
+  constructor(attr: Partial<FormItemAttrInterface> = {}, child?: Component | Component[]) {
     const defaultAttr: FormItemAttrInterface = {
       label: "标签名",
-      labelPosition: "right",
+      labelPosition: LabelPosition.AUTO,
       labelWidth: 80,
       size: Size.AUTO,
       required: false,
@@ -30,7 +26,7 @@ export class FormItem {
       patternMsg: "格式不符合要求",
       prop: "",
     };
-    this.attr = { ...defaultAttr, ...attr };
+    super({ ...defaultAttr, ...attr });
     if (child) {
       if (Array.isArray(child)) {
         this.children.push(...child);
@@ -38,5 +34,10 @@ export class FormItem {
         this.children.push(child);
       }
     }
+  }
+
+  override clone(): FormItem {
+    const newChild = this.children.map((item) => item.clone());
+    return new FormItem({ ...this.attr, prop: newChild[0].attr.bindField as string }, newChild);
   }
 }

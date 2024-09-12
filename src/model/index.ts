@@ -1,18 +1,11 @@
-import { FormItem } from "./FormItem";
-import { Input } from "./Input";
+export * from "./form/Form";
+export * from "./form-item/FormItem";
+export * from "./form-item/FormItem";
+export * from "./input/Input";
 
-export * from "./FormItem";
-export * from "./Input";
 interface GenerateComponentObject {
-  <T extends new (...arg: any[]) => any>(
-    constructor: T,
-    attr: ConstructorParameters<T>[0],
-    child?: any,
-  ): InstanceType<T>;
+  <T extends new (...arg: any[]) => any>(constructor: T, ...arg: ConstructorParameters<T>): InstanceType<T>;
 }
-
-export const gco: GenerateComponentObject = (constructor, attr, child) => {
-  return new constructor(attr, child);
+export const gco: GenerateComponentObject = (constructor, ...arg) => {
+  return new constructor(...arg);
 };
-
-const formItemInput = gco(FormItem, { prop: "name" }, gco(Input, {}));
