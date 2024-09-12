@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Radio } from "@/model/Radio";
 
-const instance = defineModel<Radio>({ required: true });
+defineProps<{
+  instance: Radio;
+}>();
 </script>
 
 <template>

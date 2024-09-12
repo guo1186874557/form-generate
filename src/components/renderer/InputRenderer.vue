@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Input } from "@/model";
 
-const instance = defineModel<Input>({ required: true });
+defineProps<{
+  instance: Input;
+}>();
 </script>
 
 <template>

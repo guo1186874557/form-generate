@@ -15,7 +15,7 @@ const formInstance = ref(
 </script>
 
 <template>
-  <FormRenderer v-model="formInstance"> </FormRenderer>
+  <FormRenderer :instance="formInstance"> </FormRenderer>
 </template>
 
 <style scoped></style>

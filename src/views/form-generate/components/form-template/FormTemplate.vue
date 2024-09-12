@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ComponentObject } from "component-object";
 import { VueDraggable } from "vue-draggable-plus";
 
+import FormRenderer from "@/components/renderer/FormRenderer.vue";
+import { FormItem } from "@/model";
 import useActiveVars from "@/stores/useActiveVars";
 import useFormGenerate from "@/stores/useFormGenerate";
 
@@ -12,7 +13,7 @@ const { rootForm } = storeToRefs(useFormGenerate());
 const { selectComponentObj } = storeToRefs(useActiveVars());
 
 /** 选中item */
-function selectItem(componentObj: ComponentObject) {
+function selectItem(componentObj: FormItem) {
   rootForm.value.children.forEach((v) => {
     v.selected = false;
     if (v.id === componentObj.id) {
@@ -40,7 +41,7 @@ async function deleteFormOptionChildrenById(id: string) {
 /**
  *  复制formItem数据
  */
-function onCopy(formItemData: ComponentObject) {
+function onCopy(formItemData: FormItem) {
   const newItem = formItemData.clone();
   // 将新的item添加到children
   rootForm.value.children.push(newItem);
@@ -58,12 +59,8 @@ function onCopy(formItemData: ComponentObject) {
       ghost-class="ghost"
       handle=".handle"
       class="flex-1 min-h-0 p-[10px]">
-      <el-scrollbar view-class="w-full h-full">
-        <el-form
-          :size="rootForm.attr.size as any"
-          :label-width="rootForm.attr.labelWidthAuto ? 'auto' : rootForm.attr.labelWidth + 'px'"
-          :label-position="rootForm.attr.labelPosition as any"
-          class="form-view bg-white rounded w-full min-h-full p-[10px]">
+      <el-scrollbar view-class="w-full h-full bg-white">
+        <FormRenderer class="form-view bg-white rounded w-full min-h-full py-[10px] px-[20px]" :instance="rootForm">
           <FormTemplateItem
             v-for="item in rootForm.children"
             :key="item.id"
@@ -72,7 +69,7 @@ function onCopy(formItemData: ComponentObject) {
             @del="deleteFormOptionChildrenById(item.id)"
             @copy="onCopy(item)">
           </FormTemplateItem>
-        </el-form>
+        </FormRenderer>
       </el-scrollbar>
     </VueDraggable>
   </main>

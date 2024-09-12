@@ -3,20 +3,20 @@ import FormItemRenderer from "@/components/renderer/FormItemRenderer.vue";
 import { Form } from "@/model/Form";
 import { LabelPosition, Size } from "@/types/enum";
 
-const instance = defineModel<Form>({ required: true });
+const props = defineProps<{ instance: Form }>();
+const { instance } = toRefs(props);
 
 const attr = computed(() => {
+  const attrs = instance.value.attr;
   const props: {
     labelPosition?: LabelPosition;
-    labelWidth?: number;
+    labelWidth?: any;
     size?: Size;
-  } = {};
-  const attrs = instance.value.attr;
+  } = {
+    labelWidth: attrs.labelWidthAuto ? "auto" : `${attrs.labelWidth}px`,
+  };
   if (attrs.labelPosition !== LabelPosition.AUTO) {
     props.labelPosition = attrs.labelPosition;
-  }
-  if (!attrs.labelWidthAuto) {
-    props.labelWidth = attrs.labelWidth;
   }
   if (attrs.size !== Size.AUTO) {
     props.size = attrs.size;
@@ -27,10 +27,9 @@ const attr = computed(() => {
 
 <template>
   <el-form v-bind="attr">
-    <FormItemRenderer
-      v-for="(item, index) in instance.children"
-      :key="item.id"
-      v-model="instance.children[index]"></FormItemRenderer>
+    <slot>
+      <FormItemRenderer v-for="item in instance.children" :key="item.id" :instance="item"></FormItemRenderer>
+    </slot>
   </el-form>
 </template>
 

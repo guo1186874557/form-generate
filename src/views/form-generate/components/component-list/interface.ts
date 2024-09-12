@@ -1,4 +1,4 @@
-import { ComponentType } from "@/types/enum";
+import { ComponentCategory, ComponentType } from "@/types/enum";
 
 export type ComponentListItemType = {
   id: string;
@@ -9,6 +9,6 @@ export type ComponentListItemType = {
 
 export type ComponentListType = {
   title: string;
-  name: string;
+  name: ComponentCategory;
   options: ComponentListItemType[];
 };

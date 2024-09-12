@@ -6,6 +6,7 @@ export interface FormItemAttrInterface {
   label: string;
   labelPosition: LabelPosition;
   labelWidth: number;
+  labelWidthAuto: boolean;
   size: Size;
   required: boolean;
   requiredMsg: string;
@@ -21,6 +22,7 @@ export class FormItem extends Component<FormItemAttrInterface> {
       label: "标签名",
       labelPosition: LabelPosition.AUTO,
       labelWidth: 80,
+      labelWidthAuto: true,
       size: Size.AUTO,
       required: false,
       requiredMsg: "该字段为必填项",

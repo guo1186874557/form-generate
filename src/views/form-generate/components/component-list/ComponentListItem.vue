@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { BasicComponentObject } from "component-object/src/obj/basic";
 import { VueDraggable } from "vue-draggable-plus";
 
+import { FormItem, gco, Input, Radio } from "@/model";
+import { ComponentType } from "@/types";
 import type { ComponentListItemType } from "@/views/form-generate/components/component-list/interface";
 
 defineProps<{
@@ -13,6 +14,14 @@ defineProps<{
 
 function onClone(item: ComponentListItemType) {
   // 创建一个输入框
+  switch (item.type) {
+    case ComponentType.INPUT:
+      return gco(FormItem, {}, gco(Input));
+    case ComponentType.RADIO:
+      return gco(FormItem, {}, gco(Radio));
+    default:
+      console.log(item.type);
+  }
 }
 </script>
 

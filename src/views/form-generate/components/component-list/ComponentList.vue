@@ -2,7 +2,7 @@
 import { nanoid } from "nanoid";
 
 import useActiveVars from "@/stores/useActiveVars";
-import { ComponentType } from "@/types/enum";
+import { ComponentCategory, ComponentType } from "@/types/enum";
 import type { ComponentListType } from "@/views/form-generate/components/component-list/interface";
 
 import ComponentListItem from "./ComponentListItem.vue";
@@ -12,13 +12,19 @@ const { componentListActive } = storeToRefs(useActiveVars());
 const componentsList = ref<ComponentListType[]>([
   {
     title: "基础组件",
-    name: "basic",
+    name: ComponentCategory.BASIC,
     options: [
       {
         id: nanoid(),
         name: "输入框",
         icon: "iconoir:input-field",
         type: ComponentType.INPUT,
+      },
+      {
+        id: nanoid(),
+        name: "单选框",
+        icon: "akar-icons:radio-fill",
+        type: ComponentType.RADIO,
       },
     ],
   },

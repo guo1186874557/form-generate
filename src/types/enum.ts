@@ -15,6 +15,7 @@ export enum ComponentCategory {
  */
 export enum ComponentType {
   INPUT = "input",
+  RADIO = "radio",
 }
 
 export enum Size {

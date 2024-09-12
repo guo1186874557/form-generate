@@ -22,7 +22,6 @@ onMounted(() => {
     <!-- 拖拽提示 -->
     <div v-if="option.selected" class="handle move-tooltip">
       <Icon width="14" icon="carbon:move"></Icon>
-      <span class="text-[12px]">{{ option.name }}</span>
     </div>
     <!-- 操作栏 -->
     <div v-if="option.selected" class="operation-bar">
@@ -31,11 +30,10 @@ onMounted(() => {
         width="20"
         icon="material-symbols-light:delete-outline"
         @click="$emit('del')"></Icon>
-
       <Icon class="cursor-pointer hover:text-blue-300" width="20" icon="ph:copy" @click="$emit('copy')"></Icon>
     </div>
     <!-- 表单 -->
-    <component :is="option.render()"></component>
+    <FormItemRenderer class="m-0" :instance="option"></FormItemRenderer>
   </div>
 </template>
 
@@ -53,7 +51,7 @@ $borderWidth: 2px;
 }
 
 .active {
-  border: $borderWidth solid $borderColor;
+  outline: $borderWidth solid $borderColor;
 }
 .move-tooltip {
   top: -$borderWidth;
