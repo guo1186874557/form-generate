@@ -1,5 +1,6 @@
 import { Component } from "@/model/common/Component";
 import { FormItem } from "@/model/index";
+import { ComponentAttrCategory } from "@/types";
 import { LabelPosition, Size } from "@/types/enum";
 
 interface FormAttrInterface {
@@ -11,6 +12,8 @@ interface FormAttrInterface {
 
 export class Form extends Component<FormAttrInterface> {
   children: FormItem[] = [];
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC];
+
   constructor(attr: Partial<FormAttrInterface> = {}, child?: FormItem | FormItem[]) {
     const defaultAttr: FormAttrInterface = {
       labelWidth: 80,

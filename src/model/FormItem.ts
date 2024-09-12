@@ -1,6 +1,6 @@
 import type { BasicComponent } from "@/model/common/BasicComponent";
 import { Component } from "@/model/common/Component";
-import { LabelPosition, Size } from "@/types/enum";
+import { ComponentAttrCategory, LabelPosition, Size } from "@/types/enum";
 
 export interface FormItemAttrInterface {
   label: string;
@@ -14,6 +14,8 @@ export interface FormItemAttrInterface {
   patternMsg: string;
 }
 export class FormItem extends Component<FormItemAttrInterface> {
+  collapseValue: ComponentAttrCategory[] = [ComponentAttrCategory.BASIC, ComponentAttrCategory.RULE];
+
   constructor(
     attr: Partial<FormItemAttrInterface> = {},
     public child: BasicComponent,
