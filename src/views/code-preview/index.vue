@@ -6,10 +6,10 @@ import { Radio } from "@/model/Radio";
 
 const formInstance = ref(
   gco(Form, {}, [
-    gco(FormItem, {}, [gco(Input)]),
-    gco(FormItem, {}, [gco(Input)]),
-    gco(FormItem, {}, [gco(Radio)]),
-    gco(FormItem, {}, [gco(Radio)]),
+    gco(FormItem, {}, gco(Input)),
+    gco(FormItem, {}, gco(Input)),
+    gco(FormItem, {}, gco(Radio)),
+    gco(FormItem, {}, gco(Radio)),
   ]),
 );
 </script>

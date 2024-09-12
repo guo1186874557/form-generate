@@ -22,19 +22,17 @@ const rules = computed<FormItemRule[]>(() => {
 
 <template>
   <el-form-item
-    :prop="instance.attr.prop"
+    :prop="instance.child.basicAttr.bindField"
     :label="instance.attr.label"
     :label-position="instance.attr.labelPosition ?? undefined"
     :label-width="instance.attr.labelWidth"
     :size="instance.attr.size"
     :rules="rules">
-    <template v-for="(item, index) in instance.children" :key="item.id">
-      <template v-if="item.is(Input)">
-        <InputRenderer v-model="instance.children[index]"></InputRenderer>
-      </template>
-      <template v-else-if="item.is(Radio)">
-        <RadioRenderer v-model="instance.children[index]"></RadioRenderer>
-      </template>
+    <template v-if="instance.child.is(Input)">
+      <InputRenderer v-model="instance.child"></InputRenderer>
+    </template>
+    <template v-else-if="instance.child.is(Radio)">
+      <RadioRenderer v-model="instance.child"></RadioRenderer>
     </template>
   </el-form-item>
 </template>

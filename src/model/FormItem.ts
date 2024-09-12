@@ -11,11 +11,12 @@ export interface FormItemAttrInterface {
   requiredMsg: string;
   pattern: string;
   patternMsg: string;
-  prop: string;
 }
 export class FormItem extends Component<FormItemAttrInterface> {
-  children: BasicComponent[] = [];
-  constructor(attr: Partial<FormItemAttrInterface> = {}, child?: BasicComponent | BasicComponent[]) {
+  constructor(
+    attr: Partial<FormItemAttrInterface> = {},
+    public child: BasicComponent,
+  ) {
     const defaultAttr: FormItemAttrInterface = {
       label: "标签名",
       labelPosition: LabelPosition.AUTO,
@@ -25,20 +26,12 @@ export class FormItem extends Component<FormItemAttrInterface> {
       requiredMsg: "该字段为必填项",
       pattern: "",
       patternMsg: "格式不符合要求",
-      prop: "",
     };
     super({ ...defaultAttr, ...attr });
-    if (child) {
-      if (Array.isArray(child)) {
-        this.children.push(...child);
-      } else {
-        this.children.push(child);
-      }
-    }
   }
 
   override clone(): FormItem {
-    const newChild = this.children.map((item) => item.clone());
-    return new FormItem({ ...this.attr, prop: newChild[0].attr.bindField as string }, newChild);
+    const newChild = this.child.clone();
+    return new FormItem(this.attr, newChild);
   }
 }
