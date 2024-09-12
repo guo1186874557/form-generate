@@ -1,5 +1,5 @@
-import { FormItem } from "@/model";
 import { Component } from "@/model/common/Component";
+import { FormItem } from "@/model/index";
 import { LabelPosition, Size } from "@/types/enum";
 
 interface FormAttrInterface {

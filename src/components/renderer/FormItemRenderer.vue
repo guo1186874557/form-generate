@@ -3,6 +3,7 @@ import type { FormItemRule } from "element-plus";
 
 import InputRenderer from "@/components/renderer/InputRenderer.vue";
 import { FormItem, Input } from "@/model";
+import { Radio } from "@/model/Radio";
 
 const instance = defineModel<FormItem>({ required: true });
 
@@ -30,6 +31,9 @@ const rules = computed<FormItemRule[]>(() => {
     <template v-for="(item, index) in instance.children" :key="item.id">
       <template v-if="item.is(Input)">
         <InputRenderer v-model="instance.children[index]"></InputRenderer>
+      </template>
+      <template v-else-if="item.is(Radio)">
+        <RadioRenderer v-model="instance.children[index]"></RadioRenderer>
       </template>
     </template>
   </el-form-item>

@@ -1,3 +1,4 @@
+import type { BasicComponent } from "@/model/common/BasicComponent";
 import { Component } from "@/model/common/Component";
 import { LabelPosition, Size } from "@/types/enum";
 
@@ -13,8 +14,8 @@ export interface FormItemAttrInterface {
   prop: string;
 }
 export class FormItem extends Component<FormItemAttrInterface> {
-  children: Component[] = [];
-  constructor(attr: Partial<FormItemAttrInterface> = {}, child?: Component | Component[]) {
+  children: BasicComponent[] = [];
+  constructor(attr: Partial<FormItemAttrInterface> = {}, child?: BasicComponent | BasicComponent[]) {
     const defaultAttr: FormItemAttrInterface = {
       label: "标签名",
       labelPosition: LabelPosition.AUTO,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FormItemRenderer from "@/components/renderer/FormItemRenderer.vue";
-import { Form } from "@/model/form/Form";
+import { Form } from "@/model/Form";
 import { LabelPosition, Size } from "@/types/enum";
 
 const instance = defineModel<Form>({ required: true });
