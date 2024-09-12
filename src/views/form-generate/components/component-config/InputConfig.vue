@@ -11,8 +11,8 @@ const instance = defineModel<Input>({ required: true });
   <el-form-item label="输入框类型">
     <el-select-v2
       v-model="instance.attr.type"
+      clearable
       :options="[
-        { label: InputType.TEXT, value: InputType.TEXT },
         { label: InputType.PASSWORD, value: InputType.PASSWORD },
         { label: InputType.TEXTAREA, value: InputType.TEXTAREA },
       ]"></el-select-v2>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Form } from "@/model";
 import { ComponentAttrCategory, LabelPosition, Size } from "@/types";
-import LabelWidthConfig from "@/views/form-generate/components/component-config/components/LabelWidthConfig.vue";
 
 const formInstance = defineModel<Form>({ required: true });
 
@@ -32,9 +31,12 @@ const sizeOptions: { label: Size; value: Size }[] = [
               <el-radio-button label="右侧" :value="LabelPosition.RIGHT" />
             </el-radio-group>
           </el-form-item>
-          <LabelWidthConfig
-            v-model:label-width-auto="formInstance.attr.labelWidthAuto"
-            v-model:label-width="formInstance.attr.labelWidth"></LabelWidthConfig>
+          <el-form-item label="标签宽度">
+            <el-input-number
+              :disabled="formInstance.attr.labelWidthAuto"
+              v-model="formInstance.attr.labelWidth"></el-input-number>
+            <el-checkbox class="ml-2" v-model="formInstance.attr.labelWidthAuto">自动</el-checkbox>
+          </el-form-item>
         </el-collapse-item>
       </el-collapse>
     </el-form>
