@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 
-import { FormItem, Input } from "@/model";
+import { FormItem, Input, Radio } from "@/model";
 import useFormGenerate from "@/stores/useFormGenerate";
 import { ComponentAttrCategory, Size } from "@/types";
 import InputConfig from "@/views/form-generate/components/component-config/InputConfig.vue";
+import RadioConfig from "@/views/form-generate/components/component-config/RadioConfig.vue";
 
 const instance = defineModel<FormItem>({ required: true });
 const { rootForm } = storeToRefs(useFormGenerate());
@@ -82,6 +83,9 @@ const regsObj = [
 
           <template v-if="instance.child.is(Input)">
             <InputConfig v-model="instance.child"></InputConfig>
+          </template>
+          <template v-else-if="instance.child.is(Radio)">
+            <RadioConfig v-model="instance.child"></RadioConfig>
           </template>
         </el-collapse-item>
 
