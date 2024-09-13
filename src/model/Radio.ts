@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash-es";
 import { nanoid } from "nanoid";
 
 import { type BasicAttrInterface, BasicComponent } from "@/model/common/BasicComponent";
@@ -22,6 +23,7 @@ export class Radio extends BasicComponent<RadioAttrInterface> {
   override clone(): Radio {
     const newRadio = new Radio(this.attr, this.basicAttr);
     newRadio.basicAttr.bindField = createFieldName();
+    newRadio.attr.options = cloneDeep(this.attr.options);
     return newRadio;
   }
 }
