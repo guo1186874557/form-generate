@@ -48,7 +48,7 @@ const attr = computed(() => {
 </script>
 
 <template>
-  <el-form-item v-bind="attr" :rules="rules">
+  <el-form-item v-bind="attr">
     <template v-if="instance.child.is(Input)">
       <InputRenderer :instance="instance.child"></InputRenderer>
     </template>

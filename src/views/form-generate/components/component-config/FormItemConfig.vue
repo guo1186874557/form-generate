@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import { FormItem, Input, Radio } from "@/model";
 import useFormGenerate from "@/stores/useFormGenerate";
 import { ComponentAttrCategory, Size } from "@/types";
+import { emailRegStr, idCardRegStr, phoneRegStr } from "@/utils/regStr";
 import InputConfig from "@/views/form-generate/components/component-config/InputConfig.vue";
 import RadioConfig from "@/views/form-generate/components/component-config/RadioConfig.vue";
 
@@ -26,18 +27,9 @@ function onBindKeyChange(val: string) {
 
 // 校验正则
 const regsObj = [
-  {
-    label: "手机号",
-    value: "^1[3-9]\\d{9}$",
-  },
-  {
-    label: "邮箱",
-    value: "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",
-  },
-  {
-    label: "身份证号",
-    value: "^\\d{17}[\\d|xX|X]{1}$|^\\d{15}$",
-  },
+  { label: "手机号", value: phoneRegStr },
+  { label: "邮箱", value: emailRegStr },
+  { label: "身份证号", value: idCardRegStr },
 ];
 </script>
 
