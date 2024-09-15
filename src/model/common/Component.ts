@@ -1,5 +1,9 @@
 import { nanoid } from "nanoid";
 
+export type DepType = {
+  import: string[];
+  from: string;
+};
 export class Component<T = any> {
   id: string = nanoid();
   selected: boolean = false;
@@ -19,6 +23,20 @@ export class Component<T = any> {
    */
   clone(): Component {
     return new Component(this.attr);
+  }
+
+  /**
+   * 转换为模板字符串
+   */
+  toTemplate(): string {
+    return "";
+  }
+
+  /**
+   * 获取组件依赖
+   */
+  getDeps(): DepType[] {
+    return [];
   }
 }
 type GetInstanceType<T> = T extends new (...arg: any[]) => infer R ? R : never;

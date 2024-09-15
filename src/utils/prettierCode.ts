@@ -8,7 +8,7 @@ import pluginsTs from "prettier/plugins/typescript";
  * @param code 代码字符串
  * @param lang 语言类型 默认typescript
  */
-export async function prettierCode(code: string, lang = "typescript") {
+export async function prettierCode(code: string, lang: "html" | "typescript" = "typescript") {
   try {
     const plugins = [];
     if (lang === "html") {

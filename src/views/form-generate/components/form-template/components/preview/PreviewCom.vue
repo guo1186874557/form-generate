@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Repl, useStore } from "@vue/repl";
-import CodeEditer from "@vue/repl/monaco-editor";
-import { prettierCode } from "component-object";
+import Editor from "@vue/repl/monaco-editor";
 
 import useFormGenerate from "@/stores/useFormGenerate";
+import { createSFC } from "@/utils/createSFC";
 
 const { rootForm } = storeToRefs(useFormGenerate());
 
@@ -28,8 +28,9 @@ const previewOptions = {
 
 const show = ref(false);
 async function onPreview() {
-  let code = await prettierCode(await rootForm.value.toSfc(), "html");
-  await store.setFiles({ "Index.vue": code }, "Index.vue");
+  const code = rootForm.value.toTemplate();
+  const script = rootForm.value.toScript();
+  await store.setFiles({ "Index.vue": await createSFC(code, script, "") }, "Index.vue");
   show.value = true;
 }
 </script>
@@ -51,7 +52,7 @@ async function onPreview() {
       :show-compile-output="false"
       :show-ts-config="false"
       :store="store"
-      :editor="CodeEditer"
+      :editor="Editor"
       :preview-options="previewOptions" />
   </el-dialog>
 </template>

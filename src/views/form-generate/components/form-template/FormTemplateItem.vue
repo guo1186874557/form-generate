@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { ComponentObject } from "component-object";
+
+import { FormItem } from "@/model";
 
 defineProps<{
-  option: ComponentObject;
+  option: FormItem;
 }>();
 
 const emit = defineEmits<{

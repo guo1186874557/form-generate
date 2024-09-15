@@ -1,6 +1,7 @@
 import type { BasicComponent } from "@/model/common/BasicComponent";
-import { Component } from "@/model/common/Component";
+import { Component, type DepType } from "@/model/common/Component";
 import { ComponentAttrCategory, LabelPosition, Size } from "@/types/enum";
+import { mergeDeps } from "@/utils/mergeDeps";
 
 export interface FormItemAttrInterface {
   label: string;
@@ -37,5 +38,39 @@ export class FormItem extends Component<FormItemAttrInterface> {
   override clone(): FormItem {
     const newChild = this.child.clone();
     return new FormItem(this.attr, newChild);
+  }
+
+  override getDeps(): DepType[] {
+    const childDeps = this.child.getDeps();
+    const selfDeps = [{ import: ["ElFormItem"], from: "element-plus" }];
+    return mergeDeps(selfDeps, childDeps);
+  }
+
+  override toTemplate(): string {
+    const attr = this.attr;
+    const parserAttr = {
+      label: `label="${attr.label}"`,
+      labelWidth: attr.labelWidthAuto ? "" : `label-width="${attr.labelWidth}px"`,
+      labelPosition: attr.labelPosition === LabelPosition.AUTO ? "" : `label-position="${attr.labelPosition}"`,
+      size: attr.size === Size.AUTO ? "" : `size="${attr.size}"`,
+      prop: this.child.basicAttr.bindField ? `prop="${this.child.basicAttr.bindField}"` : "",
+      rules: () => {
+        const rules: string[] = [];
+        if (attr.required) {
+          rules.push(`{ required: true, message: '${attr.requiredMsg}' }`);
+        }
+        if (attr.pattern) {
+          rules.push(`{ pattern: /${attr.pattern}/, message: '${attr.patternMsg}' }`);
+        }
+        return rules.length > 0 ? `:rules="[${rules}]"` : "";
+      },
+    };
+    const useAttr = Object.values(parserAttr)
+      .map((v) => (typeof v === "function" ? v() : v))
+      .filter(Boolean)
+      .join(" ");
+    return `<el-form-item ${useAttr}>
+              ${this.child.toTemplate()}
+            </el-form-item>`;
   }
 }
