@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FormItem } from "@/model";
 import useActiveVars from "@/stores/useActiveVars";
 import useFormGenerate from "@/stores/useFormGenerate";
 import FormItemConfig from "@/views/form-generate/components/component-config/FormItemConfig.vue";
@@ -15,7 +16,7 @@ defineOptions({ name: "ComponentConfig" });
   <div class="attr-container w-[300px] px-2">
     <el-tabs class="w-full h-full">
       <el-tab-pane class="w-full h-full" label="组件配置">
-        <template v-if="selectComponentObj">
+        <template v-if="selectComponentObj && selectComponentObj.is(FormItem)">
           <FormItemConfig :key="selectComponentObj.id" v-model="selectComponentObj"></FormItemConfig>
         </template>
         <el-empty v-else description="请先选择组件"></el-empty>
