@@ -1,3 +1,4 @@
+export * from "./Checkbox";
 export * from "./common/BasicComponent";
 export * from "./common/Component";
 export * from "./Form";

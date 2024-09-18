@@ -3,7 +3,7 @@ import type { FormItemRule } from "element-plus";
 
 import InputRenderer from "@/components/renderer/InputRenderer.vue";
 import RadioRenderer from "@/components/renderer/RadioRenderer.vue";
-import { FormItem, Input } from "@/model";
+import { Checkbox, FormItem, Input } from "@/model";
 import { Radio } from "@/model/Radio";
 import { LabelPosition, Size } from "@/types";
 
@@ -54,6 +54,9 @@ const attr = computed(() => {
     </template>
     <template v-else-if="instance.child.is(Radio)">
       <RadioRenderer :instance="instance.child"></RadioRenderer>
+    </template>
+    <template v-else-if="instance.child.is(Checkbox)">
+      <CheckboxRenderer :instance="instance.child"></CheckboxRenderer>
     </template>
   </el-form-item>
 </template>
