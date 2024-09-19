@@ -36,7 +36,7 @@ async function onPreview() {
 </script>
 
 <template>
-  <el-button @click="onPreview"> 预览 </el-button>
+  <el-button @click="onPreview" type="primary" size="small" v-bind="$attrs"> 预览 </el-button>
   <el-dialog
     class="preview-dialog"
     top="20px"

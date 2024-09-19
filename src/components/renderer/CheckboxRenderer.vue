@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <el-checkbox-group :model-value="instance.basicAttr.defaultValue" :disabled="instance.basicAttr.disabled">
-    <el-checkbox v-for="item in instance.attr.options" :key="item.id" :label="item.value" :value="item.value" />
+    <el-checkbox v-for="item in instance.attr.options" :key="item.id" :label="item.label" :value="item.value" />
   </el-checkbox-group>
 </template>
 

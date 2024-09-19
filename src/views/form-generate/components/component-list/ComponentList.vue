@@ -26,6 +26,12 @@ const componentsList = ref<ComponentListType[]>([
         icon: "akar-icons:radio-fill",
         type: ComponentType.RADIO,
       },
+      {
+        id: nanoid(),
+        name: "多选框",
+        icon: "mdi:checkbox-outline",
+        type: ComponentType.CHECKBOX,
+      },
     ],
   },
 ]);
