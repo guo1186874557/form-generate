@@ -29,6 +29,5 @@ export enum LabelPosition {
   TOP = "top",
   LEFT = "left",
   RIGHT = "right",
-  CENTER = "center",
   AUTO = "", //  使用 会根据全局组件位置自动调整位置
 }

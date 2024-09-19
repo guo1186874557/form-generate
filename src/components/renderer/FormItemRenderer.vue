@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FormItemRule } from "element-plus";
-
 import InputRenderer from "@/components/renderer/InputRenderer.vue";
 import RadioRenderer from "@/components/renderer/RadioRenderer.vue";
 import { Checkbox, FormItem, Input } from "@/model";
@@ -10,26 +8,15 @@ import { LabelPosition, Size } from "@/types";
 const props = defineProps<{ instance: FormItem }>();
 const { instance } = toRefs(props);
 
-const rules = computed<FormItemRule[]>(() => {
-  const { required, requiredMsg, pattern, patternMsg } = instance.value.attr;
-  const arr: FormItemRule[] = [];
-  if (required) {
-    arr.push({ required: true, message: requiredMsg });
-  }
-  if (pattern) {
-    arr.push({ pattern: new RegExp(pattern), message: patternMsg });
-  }
-  return arr;
-});
-
 const attr = computed(() => {
   const { child, attr } = instance.value;
   const props: {
     prop?: string;
     label?: string;
-    size?: string;
+    size?: Size;
     labelWidth?: number;
     labelPosition?: LabelPosition;
+    required?: boolean;
   } = {
     prop: child.basicAttr.bindField,
     label: attr.label,
@@ -42,6 +29,9 @@ const attr = computed(() => {
   }
   if (attr.labelPosition !== LabelPosition.AUTO) {
     props.labelPosition = attr.labelPosition;
+  }
+  if (attr.required) {
+    props.required = attr.required;
   }
   return props;
 });
