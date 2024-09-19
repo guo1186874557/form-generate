@@ -23,6 +23,12 @@ const instance = defineModel<Input>({ required: true });
   <el-form-item label="默认值">
     <el-input clearable v-model="instance.basicAttr.defaultValue" placeholder="请输入默认值"></el-input>
   </el-form-item>
+  <el-form-item label="只读">
+    <el-switch clearable v-model="instance.attr.readonly"></el-switch>
+  </el-form-item>
+  <el-form-item label="清空">
+    <el-switch clearable v-model="instance.attr.clearable"></el-switch>
+  </el-form-item>
 </template>
 
 <style scoped></style>

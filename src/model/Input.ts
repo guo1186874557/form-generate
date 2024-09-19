@@ -45,8 +45,8 @@ export class Input extends BasicComponent<InputAttrInterface> {
   override toTemplate(): string {
     const parserAttr: Record<keyof InputAttrInterface, string> = {
       placeholder: `placeholder="${this.attr.placeholder}"`,
-      clearable: this.attr.clearable ? `clearable="${this.attr.clearable}"` : "",
-      readonly: this.attr.readonly ? `readonly="${this.attr.readonly}"` : "",
+      clearable: this.attr.clearable ? `clearable` : "",
+      readonly: this.attr.readonly ? `readonly` : "",
       type: this.attr.type !== InputType.TEXT ? `type="${this.attr.type}"` : "",
       rows: this.attr.type === InputType.TEXTAREA ? `rows="${this.attr.rows}"` : "",
     };

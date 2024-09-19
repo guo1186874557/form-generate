@@ -16,9 +16,12 @@ const attr = computed(() => {
     size?: Size;
     labelWidth?: number;
     labelPosition?: LabelPosition;
+    required?: boolean;
+    showMessage: boolean;
   } = {
     prop: child.basicAttr.bindField,
     label: attr.label,
+    showMessage: false,
   };
   if (attr.size !== Size.AUTO) {
     props.size = attr.size;
@@ -28,6 +31,9 @@ const attr = computed(() => {
   }
   if (attr.labelPosition !== LabelPosition.AUTO) {
     props.labelPosition = attr.labelPosition;
+  }
+  if (attr.required) {
+    props.required = attr.required;
   }
   return props;
 });
