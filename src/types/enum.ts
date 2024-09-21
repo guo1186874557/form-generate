@@ -17,6 +17,7 @@ export enum ComponentType {
   INPUT = "input",
   RADIO = "radio",
   CHECKBOX = "checkbox",
+  SELECT = "select",
 }
 
 export enum Size {

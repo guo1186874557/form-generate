@@ -32,6 +32,12 @@ const componentsList = ref<ComponentListType[]>([
         icon: "mdi:checkbox-outline",
         type: ComponentType.CHECKBOX,
       },
+      {
+        id: nanoid(),
+        name: "下拉框",
+        icon: "tabler:select",
+        type: ComponentType.SELECT,
+      },
     ],
   },
 ]);

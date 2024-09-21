@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 
-import { Checkbox, FormItem, Input, Radio } from "@/model";
+import { Checkbox, FormItem, Input, Radio, Select } from "@/model";
 import useFormGenerate from "@/stores/useFormGenerate";
 import { ComponentAttrCategory, Size } from "@/types";
 import { emailRegStr, idCardRegStr, phoneRegStr } from "@/utils/regStr";
 import CheckboxConfig from "@/views/form-generate/components/component-config/CheckboxConfig.vue";
 import InputConfig from "@/views/form-generate/components/component-config/InputConfig.vue";
 import RadioConfig from "@/views/form-generate/components/component-config/RadioConfig.vue";
+import SelectConfig from "@/views/form-generate/components/component-config/SelectConfig.vue";
 
 const instance = defineModel<FormItem>({ required: true });
 const { rootForm } = storeToRefs(useFormGenerate());
@@ -82,6 +83,9 @@ const regsObj = [
           </template>
           <template v-else-if="instance.child.is(Checkbox)">
             <CheckboxConfig v-model="instance.child"></CheckboxConfig>
+          </template>
+          <template v-else-if="instance.child.is(Select)">
+            <SelectConfig v-model="instance.child"></SelectConfig>
           </template>
         </el-collapse-item>
 

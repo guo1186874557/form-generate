@@ -2,7 +2,7 @@
 import { Icon } from "@iconify/vue";
 import { VueDraggable } from "vue-draggable-plus";
 
-import { Checkbox, FormItem, gco, Input, Radio } from "@/model";
+import { Checkbox, FormItem, gco, Input, Radio, Select } from "@/model";
 import { ComponentType } from "@/types";
 import type { ComponentListItemType } from "@/views/form-generate/components/component-list/interface";
 
@@ -21,6 +21,8 @@ function onClone(item: ComponentListItemType) {
       return gco(FormItem, {}, gco(Radio));
     case ComponentType.CHECKBOX:
       return gco(FormItem, {}, gco(Checkbox));
+    case ComponentType.SELECT:
+      return gco(FormItem, {}, gco(Select));
     default:
       console.log(item.type as never);
   }

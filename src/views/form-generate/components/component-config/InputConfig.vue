@@ -6,7 +6,7 @@ const instance = defineModel<Input>({ required: true });
 
 <template>
   <el-form-item label="占位符">
-    <el-input v-model="instance.attr.placeholder"></el-input>
+    <el-input v-model="instance.attr.placeholder" clearable></el-input>
   </el-form-item>
   <el-form-item label="输入框类型">
     <el-select-v2
