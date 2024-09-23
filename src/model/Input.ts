@@ -43,13 +43,14 @@ export class Input extends BasicComponent<InputAttrInterface> {
   }
 
   override toTemplate(): string {
-    const parserAttr: Record<keyof InputAttrInterface, string> = {
+    const parserAttr = {
       placeholder: `placeholder="${this.attr.placeholder}"`,
       clearable: this.attr.clearable ? `clearable` : "",
       readonly: this.attr.readonly ? `readonly` : "",
       type: this.attr.type !== InputType.TEXT ? `type="${this.attr.type}"` : "",
       rows: this.attr.type === InputType.TEXTAREA ? `rows="${this.attr.rows}"` : "",
+      vModel: `v-model="formData.${this.basicAttr.bindField}"`,
     };
-    return `<el-input v-model="formData.${this.basicAttr.bindField}" ${Object.values(parserAttr).filter(Boolean).join(" ")}></el-input>`;
+    return `<el-input ${Object.values(parserAttr).filter(Boolean).join(" ")}></el-input>`;
   }
 }
