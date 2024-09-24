@@ -18,6 +18,7 @@ export enum ComponentType {
   RADIO = "radio",
   CHECKBOX = "checkbox",
   SELECT = "select",
+  DATA_PICKER = "data-picker",
 }
 
 export enum Size {
@@ -31,4 +32,12 @@ export enum LabelPosition {
   LEFT = "left",
   RIGHT = "right",
   AUTO = "", //  使用 会根据全局组件位置自动调整位置
+}
+
+export enum DatePickerType {
+  DATE = "date",
+  DATETIME = "datetime",
+  YEAR = "year",
+  MONTH = "month",
+  EMPTY = "", //  默认为空，由组件自行决定
 }

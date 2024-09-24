@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 
-import { Checkbox, FormItem, Input, Radio, Select } from "@/model";
+import { Checkbox, DatePicker, FormItem, Input, Radio, Select } from "@/model";
 import useFormGenerate from "@/stores/useFormGenerate";
 import { ComponentAttrCategory, Size } from "@/types";
 import { emailRegStr, idCardRegStr, phoneRegStr } from "@/utils/regStr";
 import CheckboxConfig from "@/views/form-generate/components/component-config/CheckboxConfig.vue";
+import DatePickerConfig from "@/views/form-generate/components/component-config/DatePickerConfig.vue";
 import InputConfig from "@/views/form-generate/components/component-config/InputConfig.vue";
 import RadioConfig from "@/views/form-generate/components/component-config/RadioConfig.vue";
 import SelectConfig from "@/views/form-generate/components/component-config/SelectConfig.vue";
@@ -86,6 +87,9 @@ const regsObj = [
           </template>
           <template v-else-if="instance.child.is(Select)">
             <SelectConfig v-model="instance.child"></SelectConfig>
+          </template>
+          <template v-else-if="instance.child.is(DatePicker)">
+            <DatePickerConfig v-model="instance.child"></DatePickerConfig>
           </template>
         </el-collapse-item>
 

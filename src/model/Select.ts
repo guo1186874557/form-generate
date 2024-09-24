@@ -3,12 +3,11 @@ import { nanoid } from "nanoid";
 
 import { type BasicAttrInterface, BasicComponent } from "@/model/common/BasicComponent";
 import type { DepType } from "@/model/common/Component";
+import type { OptionsItemInterface } from "@/types";
 import { createFieldName } from "@/utils";
 
 export interface SelectAttrInterface {
-  options:
-    | { label: string; value: string; id: string; disabled?: boolean }[]
-    | { label: string; value: number; id: string; disabled?: boolean }[];
+  options: OptionsItemInterface[];
   multiple: boolean;
   clearable: boolean;
   placeholder: string;

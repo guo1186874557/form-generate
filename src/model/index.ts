@@ -1,6 +1,7 @@
 export * from "./Checkbox";
 export * from "./common/BasicComponent";
 export * from "./common/Component";
+export * from "./DatePicker";
 export * from "./Form";
 export * from "./FormItem";
 export * from "./FormItem";

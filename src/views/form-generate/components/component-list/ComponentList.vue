@@ -38,6 +38,12 @@ const componentsList = ref<ComponentListType[]>([
         icon: "tabler:select",
         type: ComponentType.SELECT,
       },
+      {
+        id: nanoid(),
+        name: "日期选择",
+        icon: "lets-icons:date-range-duotone",
+        type: ComponentType.DATA_PICKER,
+      },
     ],
   },
 ]);

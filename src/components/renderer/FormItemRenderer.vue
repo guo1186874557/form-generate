@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputRenderer from "@/components/renderer/InputRenderer.vue";
 import RadioRenderer from "@/components/renderer/RadioRenderer.vue";
-import { Checkbox, FormItem, Input, Select } from "@/model";
+import { Checkbox, DatePicker, FormItem, Input, Select } from "@/model";
 import { Radio } from "@/model/Radio";
 import { LabelPosition, Size } from "@/types";
 
@@ -52,6 +52,9 @@ const attr = computed(() => {
     </template>
     <template v-else-if="instance.child.is(Select)">
       <SelectRenderer :instance="instance.child"></SelectRenderer>
+    </template>
+    <template v-else-if="instance.child.is(DatePicker)">
+      <DatePickerRenderer :instance="instance.child"></DatePickerRenderer>
     </template>
   </el-form-item>
 </template>
